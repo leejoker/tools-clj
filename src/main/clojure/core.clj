@@ -54,8 +54,8 @@
                         :artifactId    (ask-get-input "Project artifactId: ")
                         :version       (ask-get-input "Project version: ")
                         :jdkVersion    (ask-get-input "JDK Version(11 17 21): ")
-                        :nameSpaces    (ask-get-input "NS to Compile(separate with space): ")
-                        :mainNameSpace (ask-get-input "Main NS: ")}]
+                        :nameSpaces    "core"
+                        :mainNameSpace "core"}]
     user-input-map))
 
 (defn -main
