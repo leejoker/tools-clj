@@ -1,8 +1,39 @@
 (ns core
   (:gen-class)
   (:require [babashka.fs :as fs]
-            [clojure.string :as s]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io]
+            [clojure.string :as s]))
+
+
+(defn create-project-structure
+  [path]
+  (let [src-dir (fs/path path "src" "main" "clojure")
+        src-resources (fs/path path "src" "main" "resources")
+        core (fs/path src-dir "core.clj")
+        readme (fs/path path "README.md")
+        ignore (fs/path path ".gitignore")
+        build (fs/path path "build.clj")
+        deps (fs/path path "deps.edn")
+        dirs [src-dir src-resources]
+        files [core readme ignore build deps]]
+    ;; 创建目录
+    (doseq [dir dirs]
+      (when-not (fs/exists? dir)
+        (fs/create-dirs dir)))
+    ;; 创建文件
+    (doseq [file files]
+      (when-not (fs/exists? file)
+        (fs/create-file file)))))
+
+(defn add-config
+  [config-name path f opt]
+  (let [template-name (str config-name ".tl")
+        content (slurp (io/resource template-name))
+        rewrite-content (if f (f content opt) nil)
+        file-path (fs/path path config-name)]
+    (if (nil? rewrite-content)
+      (fs/write-bytes file-path (.getBytes content))
+      (fs/write-bytes file-path (.getBytes rewrite-content)))))
 
 (defn overwrite-template-content
   "overwrite the template with args"
@@ -27,22 +58,11 @@
                         :mainNameSpace (ask-get-input "Main NS: ")}]
     user-input-map))
 
-(defn add-build-clj
-  [project-path options]
-  (let [content (slurp (io/resource "build.clj.tl"))
-        rewrite-content (overwrite-template-content content options)
-        path (fs/path project-path)
-        file-path (fs/path path "build.clj")]
-    (if (or (not (fs/exists? path)) (not (fs/exists? file-path)))
-      (try
-        (if (not (fs/exists? path)) (fs/create-dirs path) true)
-        (if (not (fs/exists? file-path)) (fs/create-file file-path) true)
-        (catch Exception e
-          (println "error: " (.getMessage e))))
-      nil)
-    (fs/write-bytes file-path (.getBytes rewrite-content))))
-
-;; TODO create project dir, create deps.edn
 (defn -main
   [& args]
-  (add-build-clj (first args) (read-user-input)))
+  (let [path (first args)
+        opts (read-user-input)]
+    (create-project-structure path)
+    (add-config "core.clj" (fs/path path "src" "main" "clojure") nil opts)
+    (add-config "deps.edn" path nil opts)
+    (add-config "build.clj" path overwrite-template-content opts)))
