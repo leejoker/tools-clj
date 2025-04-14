@@ -49,20 +49,28 @@
   (read-line))
 
 (defn read-user-input
-  []
+  [project-name]
   (let [user-input-map {:groupId       (ask-get-input "Project groupId: ")
-                        :artifactId    (ask-get-input "Project artifactId: ")
-                        :version       (ask-get-input "Project version: ")
+                        :artifactId    project-name
+                        :version       "1.0.0-SNAPSHOT"
                         :jdkVersion    (ask-get-input "JDK Version(11 17 21): ")
                         :nameSpaces    "core"
                         :mainNameSpace "core"}]
     user-input-map))
 
-(defn -main
-  [& args]
-  (let [path (first args)
-        opts (read-user-input)]
+(defn create-project
+  [project-name]
+  (let [path (fs/path "." project-name)
+        opts (read-user-input project-name)]
     (create-project-structure path)
     (add-config "core.clj" (fs/path path "src" "main" "clojure") nil opts)
     (add-config "deps.edn" path nil opts)
     (add-config "build.clj" path overwrite-template-content opts)))
+
+(defn -main
+  [& args]
+  (let [command (first args)
+        project-name (second args)]
+    (if (= command "new")
+      (create-project project-name)
+      (println "please use command: new"))))
