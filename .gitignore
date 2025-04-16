@@ -2,6 +2,7 @@
 .clj-kondo/
 .cpcache/
 .lsp/
+.vscode/
 
 target/
 *.iml
