@@ -1,4 +1,4 @@
-(ns core
+(ns cmd.core
   (:gen-class)
   (:require [babashka.fs :as fs]
             [clojure.java.io :as io]
