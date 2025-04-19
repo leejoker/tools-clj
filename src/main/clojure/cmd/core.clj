@@ -1,9 +1,14 @@
 (ns cmd.core
   (:gen-class)
   (:require [babashka.fs :as fs]
-            [clojure.java.io :as io]
+            [babashka.http-client :as http]
             [clojure.string :as s]))
 
+(defn fetch-remote-template
+  [name]
+  (let [http-base "https://gitee.com/monkeyNaive/tools-clj/raw/main/src/main/resources/"
+        resp (http/get (str http-base name))]
+    (get resp :body)))
 
 (defn create-project-structure
   [path]
@@ -28,12 +33,12 @@
 (defn add-config
   [config-name path f opt]
   (let [template-name (str config-name ".tl")
-        content (slurp (io/resource template-name))
-        rewrite-content (if f (f content opt) nil)
+        ^String content (fetch-remote-template template-name)
+        ^String rewrite-content (if f (f content opt) nil)
         file-path (fs/path path config-name)]
     (if (nil? rewrite-content)
-      (fs/write-bytes file-path (.getBytes content))
-      (fs/write-bytes file-path (.getBytes rewrite-content)))))
+      (fs/write-bytes file-path (.getBytes (String. content)))
+      (fs/write-bytes file-path (.getBytes (String. rewrite-content))))))
 
 (defn overwrite-template-content
   "overwrite the template with args"
