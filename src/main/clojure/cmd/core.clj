@@ -12,15 +12,18 @@
 
 (defn create-project-structure
   [path]
-  (let [src-dir (fs/path path "src" "main" "clojure")
-        src-resources (fs/path path "src" "main" "resources")
-        core (fs/path src-dir "core.clj")
-        readme (fs/path path "README.md")
-        ignore (fs/path path ".gitignore")
-        build (fs/path path "build.clj")
-        deps (fs/path path "deps.edn")
-        dirs [src-dir src-resources]
-        files [core readme ignore build deps]]
+  (let [script-dir     (fs/path path "scripts")
+        script-compile (fs/path script-dir "compile")
+        script-clean   (fs/path script-dir "clean")
+        src-dir        (fs/path path "src" "main" "clojure")
+        src-resources  (fs/path path "src" "main" "resources")
+        core           (fs/path src-dir "core.clj")
+        readme         (fs/path path "README.md")
+        ignore         (fs/path path ".gitignore")
+        build          (fs/path path "build.clj")
+        deps           (fs/path path "deps.edn")
+        dirs           [script-dir src-dir src-resources]
+        files          [script-compile script-clean core readme ignore build deps]]
     ;; 创建目录
     (doseq [dir dirs]
       (when-not (fs/exists? dir)
@@ -70,11 +73,13 @@
     (create-project-structure path)
     (add-config "core.clj" (fs/path path "src" "main" "clojure") nil opts)
     (add-config "deps.edn" path nil opts)
-    (add-config "build.clj" path overwrite-template-content opts)))
+    (add-config "build.clj" path overwrite-template-content opts)
+    (add-config "compile" (fs/path path "scripts") overwrite-template-content opts)
+    (add-config "clean" (fs/path path "scripts") overwrite-template-content opts)))
 
 (defn -main
   [& args]
-  (let [command (first args)
+  (let [command      (first args)
         project-name (second args)]
     (if (= command "new")
       (create-project project-name)
