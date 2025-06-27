@@ -2,10 +2,8 @@
 
 clojure -T:build uber
 
-TOOLS_CLJ_VERSION=$(cat ./VERSION)
-
 native-image \
-    -jar "target/tools-clj-$TOOLS_CLJ_VERSION-standalone.jar" \
+    -jar "target/tools-clj-0.0.1-standalone.jar" \
     -H:+ReportExceptionStackTraces \
     --features=clj_easy.graal_build_time.InitClojureClasses \
     --verbose \

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 clojure -T:build clean
-rm -f ${projectName}
+rm -f ${artifactId}

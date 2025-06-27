@@ -2,9 +2,9 @@
 
 clojure -T:build uber
 
-PROJECT_NAME=${projectName}
+PROJECT_NAME=${artifactId}
 VERSION=$(cat ./VERSION)
-EXEC_NAME=${projectName}
+EXEC_NAME=${artifactId}
 
 native-image \
     -jar "target/$PROJECT_NAME-$VERSION-standalone.jar" \
