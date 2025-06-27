@@ -1,6 +1,6 @@
 (ns http-demo
   (:require [babashka.http-client :as http]
-            [clojure.test :refer :all]))
+            [clojure.test :refer [with-test]]))
 
 (with-test
   (defn http-get-test
