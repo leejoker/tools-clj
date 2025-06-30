@@ -1,8 +1,10 @@
 (ns cmd.core
   (:gen-class)
-  (:require [babashka.fs :as fs]
-            [babashka.http-client :as http]
-            [clojure.string :as s]))
+  (:require
+   [babashka.fs :as fs]
+   [babashka.http-client :as http]
+   [clojure.string :as s]
+   [cmd.change-jetbrains-path :refer [run-cjp]]))
 
 (defn fetch-remote-template
   [name]
@@ -77,10 +79,16 @@
     (add-config "compile" (fs/path path "scripts") overwrite-template-content opts)
     (add-config "clean" (fs/path path "scripts") overwrite-template-content opts)))
 
+(defn print-help-message
+  []
+  (println "please use command: new cjp"))
+
 (defn -main
   [& args]
   (let [command      (first args)
         project-name (second args)]
-    (if (= command "new")
-      (create-project project-name)
-      (println "please use command: new"))))
+    (cond
+      (nil? command) (print-help-message)
+      (= command "new") (create-project project-name)
+      (= command "cjp") (run-cjp)
+      :else (print-help-message))))
