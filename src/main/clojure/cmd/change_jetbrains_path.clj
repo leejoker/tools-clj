@@ -11,13 +11,17 @@
   (let [dirs (fs/list-dir (:jetbrains-apps config))]
     (map #(fs/path % "bin" "idea.properties") dirs)))
 
+(defn replace-lines
+  [config]
+  {"# idea.config.path" #(str/replace % "# idea.config.path=${user.home}" (str "idea.config.path=" (:jetbrainsConfig config)))
+   "# idea.system.path" #(str/replace % "# idea.system.path=${user.home}" (str "idea.system.path=" (:jetbrainsConfig config)))
+   "# idea.plugins.path" #(str/replace % "# idea.plugins.path" "idea.plugins.path")
+   "# idea.log.path" #(str/replace % "# idea.log.path" "idea.log.path")})
+
 (defn modify-properties
   [^Config config]
   (let [properties-files (find-properties-files config)
-        replacements {"# idea.config.path" #(str/replace % "# idea.config.path=${user.home}" (str "idea.config.path=" (:jetbrainsConfig config)))
-                      "# idea.system.path" #(str/replace % "# idea.system.path=${user.home}" (str "idea.system.path=" (:jetbrainsConfig config)))
-                      "# idea.plugins.path" #(str/replace % "# idea.plugins.path" "idea.plugins.path")
-                      "# idea.log.path" #(str/replace % "# idea.log.path" "idea.log.path")}]
+        replacements (replace-lines config)]
     (doseq [f properties-files]
       (println (str "Check File " f))
       (let [content                  (fs/read-all-lines f)
@@ -34,7 +38,9 @@
           (println "Nothing to change")
           (do
             (println (str "Update Config: " f))
-            (spit f (str/join \newline new-content))))))))
+            (spit (fs/file f) (str/join \newline new-content))))
+        (println "==========================================================")))))
+
 
 (defn run-cjp
   []
@@ -43,5 +49,6 @@
       (println "JETBRAINS_HOME not found")
       (do
         (println (str "JetBrains Home: " jetbrains-home))
+        (println "==========================================================")
         (modify-properties (Config. (str jetbrains-home "/apps")
                                     (str jetbrains-home "/tool-data")))))))
