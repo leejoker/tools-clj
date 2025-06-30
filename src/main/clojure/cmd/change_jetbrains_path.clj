@@ -13,8 +13,8 @@
 
 (defn replace-lines
   [config]
-  {"# idea.config.path" #(str/replace % "# idea.config.path=${user.home}" (str "idea.config.path=" (:jetbrainsConfig config)))
-   "# idea.system.path" #(str/replace % "# idea.system.path=${user.home}" (str "idea.system.path=" (:jetbrainsConfig config)))
+  {"# idea.config.path" #(str/replace % "# idea.config.path=${user.home}" (str "idea.config.path=" (:jetbrains-config config)))
+   "# idea.system.path" #(str/replace % "# idea.system.path=${user.home}" (str "idea.system.path=" (:jetbrains-config config)))
    "# idea.plugins.path" #(str/replace % "# idea.plugins.path" "idea.plugins.path")
    "# idea.log.path" #(str/replace % "# idea.log.path" "idea.log.path")})
 
