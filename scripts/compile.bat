@@ -1,3 +1,8 @@
+@echo off
+
+set VERSION=0.0.2
+
+clojure -T:build clean
 clojure -T:build uber
 
-native-image -jar "target/tools-clj-0.0.1-standalone.jar" -H:+ReportExceptionStackTraces --features=clj_easy.graal_build_time.InitClojureClasses --verbose --no-fallback -o tcl
+native-image -jar "target/tools-clj-%VERSION%-standalone.jar" -H:+ReportExceptionStackTraces --features=clj_easy.graal_build_time.InitClojureClasses --verbose --no-fallback -o tcl

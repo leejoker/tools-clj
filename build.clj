@@ -3,7 +3,7 @@
   (:import (java.io File)))
 
 (def lib 'io.leejoker.github/tools-clj)
-(def version "0.0.1")
+(def version (slurp "VERSION"))
 (def class-dir "target/classes")
 (def basis (delay (b/create-basis {:project "deps.edn"})))
 (def jar-file (format "target/%s-%s.jar" (name lib) version))
