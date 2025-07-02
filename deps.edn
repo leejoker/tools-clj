@@ -1,5 +1,6 @@
 {:deps    {org.clojure/clojure                  {:mvn/version "1.12.1"}
            babashka/fs                          {:mvn/version "0.5.26"}
+           cheshire/cheshire                    {:mvn/version "6.0.0"}
            org.babashka/http-client             {:mvn/version "0.4.23"}
            com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}}
 

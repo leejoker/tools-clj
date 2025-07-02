@@ -2,6 +2,7 @@
   (:gen-class)
   (:require
    [babashka.fs :as fs]
+   [cheshire.core :as json]
    [util.draw-table :as dt :refer [column-sub column-width]])
   (:import
    (java.nio.file.attribute FileTime)
@@ -9,10 +10,6 @@
    (java.time.format DateTimeFormatter)))
 
 (def date-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
-
-(defn without-hidden-files
-  [file-infos]
-  (filter #(not (nth % 5)) file-infos))
 
 (def options
   {"-fa" (fn [file-infos] (sort-by #(nth % 0) file-infos))
@@ -26,12 +23,27 @@
    "-ma" (fn [file-infos] (sort-by #(nth % 4) file-infos))
    "-md" (fn [file-infos] (reverse (sort-by #(nth % 4) file-infos)))})
 
-(def default-column-width 70)
+(defn without-hidden-files
+  [file-infos]
+  (filter #(not (nth % 5)) file-infos))
 
-(defn handle-col-width 
+(defn windows? []
+  (let [os (System/getProperty "os.name")]
+    (.startsWith (.toLowerCase os) "win")))
+
+(defn default-column-width
+  [default-value]
+  (let [env-path    (if (windows?) (System/getenv "USERPROFILE") (System/getenv "HOME"))
+        config-file (fs/path env-path ".tclrc")]
+    (if (fs/exists? config-file)
+      (int (:filenameMaxWidth (json/parse-string (slurp (str (fs/absolutize config-file))) true)))
+      default-value)))
+
+(defn handle-col-width
   [column]
-  (let [col-len (column-width column)]
-    (if (> col-len default-column-width)
+  (let [col-len (column-width column)
+        dcw     (default-column-width 70)]
+    (if (> col-len dcw)
       (str (column-sub column default-column-width 0 "") "...")
       column)))
 
