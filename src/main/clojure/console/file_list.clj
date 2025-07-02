@@ -11,17 +11,25 @@
 
 (def date-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
 
+(defn sort-file-infos
+  [file-infos index compare-func reverse-file-list]
+  (let [comp (if (nil? compare-func) compare compare-func)
+        sorted (sort-by #(nth % index) comp file-infos)]
+    (if reverse-file-list
+      (reverse sorted)
+      sorted)))
+
 (def options
-  {"-fa" (fn [file-infos] (sort-by #(nth % 0) file-infos))
-   "-fd" (fn [file-infos] (reverse (sort-by #(nth % 0) file-infos)))
-   "-tf" (fn [file-infos] (sort-by #(nth % 1) #(if (= % "File") 1 0) file-infos))
-   "-td" (fn [file-infos] (sort-by #(nth % 1) #(if (= % "Directory") 1 0) file-infos))
-   "-sa" (fn [file-infos] (sort-by #(nth % 2) file-infos))
-   "-sd" (fn [file-infos] (reverse (sort-by #(nth % 2) file-infos)))
-   "-ca" (fn [file-infos] (sort-by #(nth % 3) file-infos))
-   "-cd" (fn [file-infos] (reverse (sort-by #(nth % 3) file-infos)))
-   "-ma" (fn [file-infos] (sort-by #(nth % 4) file-infos))
-   "-md" (fn [file-infos] (reverse (sort-by #(nth % 4) file-infos)))})
+  {"-fa" '(0 nil false)
+   "-fd" '(0 nil true)
+   "-tf" '(1 #(if (= % "File") 1 0) false)
+   "-td" '(1 #(if (= % "Directory") 1 0) false)
+   "-sa" '(2 nil false)
+   "-sd" '(2 nil true)
+   "-ca" '(3 nil false)
+   "-cd" '(3 nil true)
+   "-ma" '(4 nil false)
+   "-md" '(4 nil true)})
 
 (defn without-hidden-files
   [file-infos]
@@ -54,10 +62,10 @@
     (if (empty? params)
       files
       (apply reduce (fn [f param]
-                      (let [func (get options param)]
-                        (if (nil? func)
+                      (let [opt (get options param)]
+                        (if (nil? opt)
                           f
-                          (func f)))) files params))))
+                          (sort-file-infos f (first opt) (second opt) (last opt))))) files params))))
 
 (defn format-datetime
   [^FileTime file-time]
