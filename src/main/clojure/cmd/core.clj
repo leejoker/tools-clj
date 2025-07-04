@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [cmd.change-jetbrains-path :refer [run-cjp]]
             [cmd.project-template :refer [create-project]]
-            [console.file-list :refer [list-files]]))
+            [console.ls :refer [list-files]]))
 
 
 (defn print-help-message
