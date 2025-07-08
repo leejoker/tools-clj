@@ -3,7 +3,8 @@
   (:require
    [babashka.fs :as fs]
    [cheshire.core :as json]
-   [util.draw-table :as dt :refer [column-sub column-width]])
+   [util.draw-table :as dt :refer [column-sub column-width]]
+   [util.os :refer [env-path]])
   (:import
    (java.nio.file.attribute FileTime)
    (java.time ZoneId)
@@ -35,14 +36,9 @@
   [file-infos]
   (filter #(not (nth % 5)) file-infos))
 
-(defn windows? []
-  (let [os (System/getProperty "os.name")]
-    (.startsWith (.toLowerCase os) "win")))
-
 (defn default-column-width
   [default-value]
-  (let [env-path    (if (windows?) (System/getenv "USERPROFILE") (System/getenv "HOME"))
-        config-file (fs/path env-path ".tclrc")]
+  (let [config-file (fs/path (env-path) ".tclrc")]
     (if (fs/exists? config-file)
       (int (:filenameMaxWidth (json/parse-string (slurp (str (fs/absolutize config-file))) true)))
       default-value)))

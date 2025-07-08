@@ -1,10 +1,11 @@
 {:deps    {org.clojure/clojure                  {:mvn/version "1.12.1"}
            babashka/fs                          {:mvn/version "0.5.26"}
+           babashka/process                     {:mvn/version "0.6.23"}
            cheshire/cheshire                    {:mvn/version "6.0.0"}
            org.babashka/http-client             {:mvn/version "0.4.23"}
            com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}}
 
- :paths   ["src/main/clojure" "src/main/resources"]
+ :paths   ["src/main/clojure" "src/main/java" "src/main/resources"]
 
  :aliases {:build {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.9"}}
                    :ns-default build}}}

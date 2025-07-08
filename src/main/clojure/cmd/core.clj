@@ -1,8 +1,9 @@
 (ns cmd.core
   (:gen-class)
-  (:require [cmd.change-jetbrains-path :refer [run-cjp]]
-            [cmd.project-template :refer [create-project]]
-            [console.ls :refer [list-files]]))
+  (:require
+   [cmd.change-jetbrains-path :refer [run-cjp]]
+   [cmd.project-template :refer [create-project]]
+   [console.ls :refer [list-files]]))
 
 
 (defn print-help-message
