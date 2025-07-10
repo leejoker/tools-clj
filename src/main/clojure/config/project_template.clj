@@ -1,4 +1,4 @@
-(ns cmd.project-template
+(ns config.project-template
   (:gen-class)
   (:require
    [babashka.fs :as fs]

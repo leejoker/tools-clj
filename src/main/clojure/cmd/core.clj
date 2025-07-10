@@ -1,9 +1,10 @@
 (ns cmd.core
   (:gen-class)
   (:require
-   [cmd.change-jetbrains-path :refer [run-cjp]]
-   [cmd.project-template :refer [create-project]]
-   [console.ls :refer [list-files]]))
+   [config.project-template :refer [create-project]]
+   [console.ls :refer [list-files]]
+   [plugins.change-jetbrains-path :refer [run-cjp]]
+   [plugins.scoop :refer [install]]))
 
 
 (defn print-help-message
@@ -19,4 +20,5 @@
       (= command "new") (create-project project-name)
       (= command "cjp") (run-cjp)
       (= command "list") (list-files "." args)
+      (= command "install") (install)
       :else (print-help-message))))

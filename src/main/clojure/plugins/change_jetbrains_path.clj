@@ -1,4 +1,4 @@
-(ns cmd.change-jetbrains-path
+(ns plugins.change-jetbrains-path
   (:gen-class)
   (:require
    [clojure.string :as str]
