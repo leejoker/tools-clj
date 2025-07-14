@@ -4,7 +4,7 @@
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-files]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
-   [plugins.scoop :refer [install]]))
+   [plugins.scoop :refer [install-scoop]]))
 
 
 (defn print-help-message
@@ -20,5 +20,5 @@
       (= command "new") (create-project project-name)
       (= command "cjp") (run-cjp)
       (= command "list") (list-files "." args)
-      (= command "install") (install)
+      (= command "install") (install-scoop)
       :else (print-help-message))))

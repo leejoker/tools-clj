@@ -16,9 +16,8 @@
       nil
       (do
         (when (fs/exists? dir)
-          (println "Clean Exists Dir: " dir)
           (delete-dir dir))
-        (println "Clone " (s/replace url #"http://leejoker.top:11566/" "") " to " dir)
+        (println "Clone " (s/replace url #"http://leejoker.top:11566/" "") " to " (str dir))
         (try (with-open [g (-> git
                                (.setURI url)
                                (.setDirectory (fs/file dir))
@@ -28,5 +27,5 @@
              (catch Exception e
                (println "Retry " retry-times "times")
                (if (> retry-times 3)
-                 (println "Clone " url " to " dir " failed: " (.getMessage e))
+                 (println "Clone " url " to " (str dir) " failed: " (.getMessage e))
                  (clone-repo url dir (inc retry-times)))))))))
