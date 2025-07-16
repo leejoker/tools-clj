@@ -108,3 +108,7 @@
         file-infos (handle-file-sort (map #(file-info %) files) args)
         table      (dt/create-table (ls-header) (map #(take 5 %) file-infos))]
     (dt/draw-table table)))
+
+(defn list-current-path-files
+  [& args]
+  (list-files "." args))

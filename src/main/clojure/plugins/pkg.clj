@@ -9,3 +9,7 @@
 (defmethod pkg :self-install
   []
   (println "self-install"))
+
+(defmethod pkg :install
+  [args]
+  (println "install"))
