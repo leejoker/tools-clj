@@ -13,24 +13,23 @@
 (def date-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
 
 (defn sort-file-infos
-  [file-infos index compare-func reverse-file-list]
-  (let [comp (if (nil? compare-func) compare compare-func)
-        sorted (sort-by #(nth % index) comp file-infos)]
+  [file-infos index reverse-file-list]
+  (let [sorted (sort-by #(nth % index) file-infos)]
     (if reverse-file-list
       (reverse sorted)
       sorted)))
 
 (def options
-  {"-fa" '(0 nil false)
-   "-fd" '(0 nil true)
-   "-tf" '(1 #(if (= % "File") 1 0) false)
-   "-td" '(1 #(if (= % "Directory") 1 0) false)
-   "-sa" '(2 nil false)
-   "-sd" '(2 nil true)
-   "-ca" '(3 nil false)
-   "-cd" '(3 nil true)
-   "-ma" '(4 nil false)
-   "-md" '(4 nil true)})
+  {:filename-asc '(0 false)
+   :filename-desc '(0 true)
+   :type-file '(1 true)
+   :type-directory '(1 false)
+   :size-asc '(6 false)
+   :size-desc '(6 true)
+   :create-asc '(3 false)
+   :create-desc '(3 true)
+   :modify-asc '(4 false)
+   :modify-desc '(4 true)})
 
 (defn without-hidden-files
   [file-infos]
@@ -52,16 +51,16 @@
       column)))
 
 (defn handle-file-sort
-  [file-infos params]
-  (let [without-hidden-file (empty? (apply filter #(= % "-a") params))
+  [file-infos opts]
+  (let [without-hidden-file (not (:all opts))
         files               (if without-hidden-file (without-hidden-files file-infos) file-infos)]
-    (if (empty? params)
+    (if (empty? opts)
       files
-      (apply reduce (fn [f param]
-                      (let [opt (get options param)]
-                        (if (nil? opt)
-                          f
-                          (sort-file-infos f (first opt) (second opt) (last opt))))) files params))))
+      (reduce (fn [f key]
+                (let [opt (key options)]
+                  (if (nil? opt)
+                    f
+                    (sort-file-infos f (first opt) (last opt))))) files (keys opts)))))
 
 (defn format-datetime
   [^FileTime file-time]
@@ -95,20 +94,21 @@
   [f]
   (let [name          (handle-col-width (fs/file-name f))
         file-type     (if (fs/directory? f) "Directory" "File")
-        len           (if (= file-type "Directory") " " (readable-len (fs/size f)))
+        len           (if (= file-type "Directory") 0 (fs/size f))
+        rlen          (if (= file-type "Directory") " " (readable-len (fs/size f)))
         create-time   (format-datetime (fs/creation-time (fs/path f)))
         modified-time (format-datetime (fs/last-modified-time (fs/path f)))
         hidden        (fs/hidden? f)]
-    (seq (list name file-type len create-time modified-time hidden))))
+    (seq (list name file-type rlen create-time modified-time hidden len))))
 
 (defn list-files
-  [path & args]
+  [path opts]
   (let [p          (fs/absolutize path)
         files      (fs/list-dir p)
-        file-infos (handle-file-sort (map #(file-info %) files) args)
+        file-infos (handle-file-sort (map #(file-info %) files) opts)
         table      (dt/create-table (ls-header) (map #(take 5 %) file-infos))]
     (dt/draw-table table)))
 
 (defn list-current-path-files
-  [& args]
-  (list-files "." args))
+  [{:keys [opts]}]
+  (list-files "." opts))

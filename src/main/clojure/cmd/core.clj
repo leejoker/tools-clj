@@ -5,14 +5,15 @@
    [config.cli-spec :refer [cli-args cmd-info]]))
 
 (defn handle-unknown-command [args]
-  (println "unknown command: " (first args))
-  (println "available commands: ")
+  (println "Unknown Command: " (first args))
+  (println "Available Commands: ")
   (doseq [{:keys [cmds]} cli-args]
     (println (first cmds) "\t" (get cmd-info (first cmds)))))
 
 (defn -main
   [& args]
   (try
-    (cli/dispatch cli-args args)
-    (catch Exception _
+    (cli/dispatch cli-args (map identity args))
+    (catch Exception e
+      (println e)
       (handle-unknown-command args))))

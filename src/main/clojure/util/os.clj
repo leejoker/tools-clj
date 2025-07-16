@@ -5,15 +5,22 @@
    [babashka.process :refer [shell]]
    [clojure.string :as s]))
 
+(defn create-dirs
+  [path]
+  (when-not (fs/exists? path)
+    (fs/create-dirs path))
+  path)
+
 (defn env-path
   []
-  (let [tools-clj-home (fs/path (System/getenv "TOOLS_CLJ_HOME"))
+  (let [tools-clj-home (System/getenv "TOOLS_CLJ_HOME")
         default-path   (fs/path (if (fs/windows?)
                                   (System/getenv "USERPROFILE")
-                                  (System/getenv "HOME")) ".tools-clj")]
-    (if (nil? tools-clj-home)
-      default-path
-      tools-clj-home)))
+                                  (System/getenv "HOME")) ".tools-clj")
+        path (if (nil? tools-clj-home)
+               default-path
+               tools-clj-home)]
+    (create-dirs (fs/path path))))
 
 (defn cmd
   [command]
@@ -31,12 +38,6 @@
     (catch Exception e
       (println e)
       false)))
-
-(defn create-dirs
-  [path]
-  (when-not (fs/exists? path)
-    (fs/create-dirs path))
-  path)
 
 (defn delete-dir
   [dir-path]
