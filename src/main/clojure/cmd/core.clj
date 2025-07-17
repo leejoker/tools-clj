@@ -14,6 +14,5 @@
   [& args]
   (try
     (cli/dispatch cli-args (map identity args))
-    (catch Exception e
-      (println e)
+    (catch Exception _
       (handle-unknown-command args))))

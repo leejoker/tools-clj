@@ -1,4 +1,4 @@
-(ns plugins.scoop
+(ns util.scoop
   (:gen-class)
   (:require
    [babashka.fs :as fs]
