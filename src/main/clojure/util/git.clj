@@ -23,6 +23,7 @@
                                (.setURI url)
                                (.setDirectory (fs/file dir))
                                (.setCloneAllBranches false)
+                               (.setDepth 1)
                                (.setProgressMonitor (TextProgressMonitor.))
                                (.call))]
                g)

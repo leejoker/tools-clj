@@ -24,10 +24,10 @@
   (str "@rem {scoop}" (System/lineSeparator)
        "@echo off" (System/lineSeparator)
        "where /q pwsh.exe" (System/lineSeparator)
-       "if %%errorlevel%% equ 0 (" (System/lineSeparator)
-       "    pwsh -noprofile -ex unrestricted -file \"{scoop}\"  %%*" (System/lineSeparator)
+       "if %errorlevel% equ 0 (" (System/lineSeparator)
+       "    pwsh -noprofile -ex unrestricted -file \"{scoop}\"  %*" (System/lineSeparator)
        ") else (" (System/lineSeparator)
-       "    powershell -noprofile -ex unrestricted -file \"{scoop}\"  %%*" (System/lineSeparator)
+       "    powershell -noprofile -ex unrestricted -file \"{scoop}\"  %*" (System/lineSeparator)
        ")"))
 
 (def ^:const SCOOP_SH_TEMPLATE
@@ -51,9 +51,9 @@
   [scoop-app-dir]
   (let [config (tools-home)
         scoop-ps (str (fs/absolutize (fs/path scoop-app-dir "bin" "scoop.ps1")))
-        ps1-file (string-format SCOOP_PS1_TEMPLATE scoop-ps)
-        cmd-file (string-format SCOOP_CMD_TEMPLATE scoop-ps)
-        sh-file (string-format SCOOP_SH_TEMPLATE scoop-ps)
+        ps1-file (string-format SCOOP_PS1_TEMPLATE (list scoop-ps))
+        cmd-file (string-format SCOOP_CMD_TEMPLATE (repeat 3 scoop-ps))
+        sh-file (string-format SCOOP_SH_TEMPLATE (repeat 3 scoop-ps))
         scoop-shims {(str (fs/absolutize (fs/path (:shims config) "scoop.ps1"))) ps1-file
                      (str (fs/absolutize (fs/path (:shims config) "scoop.cmd"))) cmd-file
                      (str (fs/absolutize (fs/path (:shims config) "scoop")))     sh-file}]
