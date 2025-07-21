@@ -4,7 +4,7 @@
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
-   [plugins.pkg :refer [pkg]]))
+   [plugins.pkg :refer [pkg-run]]))
 
 (def cmd-info
   {"new"  "create clojure project"
@@ -47,6 +47,17 @@
                  :desc "sort files by moditime descending"
                  :coerce :boolean}})
 
+(def pkg-spec
+  {:self-install {:alias :si
+                  :desc "install self"
+                  :coerce :boolean}
+   :install {:alias :i
+             :desc "install package"}
+   :update {:alias :u
+            :desc "update package"}
+   :remove {:alias :r
+            :desc "remove package"}})
+
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
@@ -55,4 +66,4 @@
    {:cmds ["list"]
     :fn   list-current-path-files :spec list-spec}
    {:cmds ["pkg"]
-    :fn   pkg}])
+    :fn   pkg-run :spec pkg-spec}])

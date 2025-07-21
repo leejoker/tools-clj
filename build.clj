@@ -10,44 +10,45 @@
 (def uber-file (format "target/%s-%s-standalone.jar" (name lib) version))
 
 (defn clean [_]
-      (b/delete {:path "target"}))
+  (b/delete {:path "target"}))
 
 (defn copy-src [_]
-      (b/copy-dir {:src-dirs   ["src/main/clojure" "src/main/resources"]
-                   :target-dir class-dir}))
+  (b/copy-dir {:src-dirs   ["src/main/clojure" "src/main/resources"]
+               :target-dir class-dir}))
 
 (defn compile-java [_]
-      (if (not-empty (.listFiles (File. "src/main/java")))
-        (b/javac {:src-dirs   ["src/main/java"]
-                  :class-dir  class-dir
-                  :basis      @basis
-                  :javac-opts ["--release" "21"]})
-        nil))
+  (let [java-package (File. "src/main/java")]
+    (if (and (.exists java-package) (not-empty (.listFiles java-package)))
+      (b/javac {:src-dirs   ["src/main/java"]
+                :class-dir  class-dir
+                :basis      @basis
+                :javac-opts ["--release" "21"]})
+      nil)))
 
 (defn compile-clojure [_]
-      (b/compile-clj {:basis      @basis
-                      :ns-compile '[cmd.core]
-                      :class-dir  class-dir}))
+  (b/compile-clj {:basis      @basis
+                  :ns-compile '[cmd.core]
+                  :class-dir  class-dir}))
 
 (defn compile-all [_]
-      (clean nil)
-      (b/write-pom {:class-dir class-dir
-                    :lib       lib
-                    :version   version
-                    :basis     @basis
-                    :src-dirs  ["src/main/clojure"]})
-      (copy-src nil)
-      (compile-java nil)
-      (compile-clojure nil))
+  (clean nil)
+  (b/write-pom {:class-dir class-dir
+                :lib       lib
+                :version   version
+                :basis     @basis
+                :src-dirs  ["src/main/clojure"]})
+  (copy-src nil)
+  (compile-java nil)
+  (compile-clojure nil))
 
 (defn jar [_]
-      (compile-all nil)
-      (b/jar {:class-dir class-dir
-              :jar-file  jar-file}))
+  (compile-all nil)
+  (b/jar {:class-dir class-dir
+          :jar-file  jar-file}))
 
 (defn uber [_]
-      (compile-all nil)
-      (b/uber {:class-dir class-dir
-               :uber-file uber-file
-               :basis     @basis
-               :main      'cmd.core}))
+  (compile-all nil)
+  (b/uber {:class-dir class-dir
+           :uber-file uber-file
+           :basis     @basis
+           :main      'cmd.core}))

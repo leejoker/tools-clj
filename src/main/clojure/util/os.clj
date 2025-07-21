@@ -2,7 +2,7 @@
   (:gen-class)
   (:require
    [babashka.fs :as fs]
-   [babashka.process :refer [shell]]
+   [babashka.process :refer [shell process check]]
    [clojure.string :as s]))
 
 (defn create-dirs
@@ -29,6 +29,16 @@
       s/split-lines
       first))
 
+(defn cmd-run
+  [cmd ignore]
+  (let [proc (process cmd {:out :string})
+        p (fn [lines] (doseq [line lines] (when-not (or (nil? ignore) (s/includes? line ignore)) (println line))))]
+    (-> proc
+        check
+        :out
+        s/split-lines
+        p)))
+
 (defn ps-version?
   []
   (try
@@ -44,3 +54,23 @@
   (if (fs/windows?)
     (cmd (str "cmd /c rmdir /S /Q " dir-path))
     (cmd (str "bash -c \"rm -rf " dir-path "\""))))
+
+(defn string-format
+  [format-string args]
+  (reduce #(s/replace %1 "{scoop}" (str %2)) format-string args))
+
+(defn get-system-env-var
+  [var-name]
+  (System/getenv var-name))
+
+(defn set-system-env-var
+  [var-name var-value]
+  (let [new-var-value (s/join ";" (map #(str "\"" % "\"") (s/split var-value #";")))
+        cmd (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d " new-var-value " /f")]
+    (cmd-run (str "cmd /c " cmd) nil)))
+
+(defn add-path
+  [new-path-value]
+  (let [path (get-system-env-var "PATH")
+        new-path (str path ";" new-path-value)]
+    (set-system-env-var "PATH" new-path)))

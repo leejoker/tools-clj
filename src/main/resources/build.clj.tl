@@ -18,12 +18,13 @@
                    :target-dir class-dir}))
 
 (defn compile-java [_]
-  (if (not-empty (.listFiles (File. "src/main/java")))
-    (b/javac {:src-dirs   ["src/main/java"]
-              :class-dir  class-dir
-              :basis      @basis
-              :javac-opts ["--release" "21"]})
-    nil))
+  (let [java-package (File. "src/main/java")]
+    (if (and (.exists java-package) (not-empty (.listFiles java-package)))
+      (b/javac {:src-dirs   ["src/main/java"]
+                :class-dir  class-dir
+                :basis      @basis
+                :javac-opts ["--release" "21"]})
+      nil)))
 
 (defn compile-clojure [_]
       (b/compile-clj {:basis      @basis
