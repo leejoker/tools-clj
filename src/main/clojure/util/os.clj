@@ -62,8 +62,8 @@
 (defn set-system-env-var
   [var-name var-value]
   (let [var-value-set (into #{} (s/split var-value #";"))
-        new-var-value (s/join ";" (map #(str "\"" % "\"") var-value-set))
-        cmd (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d " new-var-value " /f")]
+        new-var-value (s/join ";" (map #(str %) var-value-set))
+        cmd (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d \"" new-var-value "\" /f")]
     (cmd-run (str "cmd /c " cmd))))
 
 (defn add-path
