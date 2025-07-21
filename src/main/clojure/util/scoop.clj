@@ -85,7 +85,7 @@
     (let [shims (:shims (tools-home))
           scoop-dir (create-plugin-dir "scoop")
           scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
-      (cmd-run (str "cmd.exe /c " scoop-cmd " install " options) "scoop")
+      (cmd-run (str "cmd.exe /c " scoop-cmd " install " options))
       (doseq [file (fs/list-dir (fs/path scoop-dir "shims"))]
         (fs/move file (fs/path shims (fs/file-name file)) {:replace-existing false})))
     (catch Exception _)))

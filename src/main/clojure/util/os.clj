@@ -30,14 +30,10 @@
       first))
 
 (defn cmd-run
-  [cmd ignore]
-  (let [proc (process cmd {:out :string})
-        p (fn [lines] (doseq [line lines] (when-not (or (nil? ignore) (s/includes? line ignore)) (println line))))]
-    (-> proc
-        check
-        :out
-        s/split-lines
-        p)))
+  [cmd]
+  (let [proc (process {:cmd cmd :inherit true :encoding "UTF-8"})
+        exit (:exit (check proc))]
+    exit))
 
 (defn ps-version?
   []
@@ -65,9 +61,10 @@
 
 (defn set-system-env-var
   [var-name var-value]
-  (let [new-var-value (s/join ";" (map #(str "\"" % "\"") (s/split var-value #";")))
+  (let [var-value-set (into #{} (s/split var-value #";"))
+        new-var-value (s/join ";" (map #(str "\"" % "\"") var-value-set))
         cmd (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d " new-var-value " /f")]
-    (cmd-run (str "cmd /c " cmd) nil)))
+    (cmd-run (str "cmd /c " cmd))))
 
 (defn add-path
   [new-path-value]
