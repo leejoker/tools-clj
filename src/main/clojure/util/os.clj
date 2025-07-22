@@ -29,6 +29,12 @@
       s/split-lines
       first))
 
+(defn cmd-run-quite
+  [cmd]
+  (let [proc (process {:cmd cmd :inherit false :encoding "UTF-8"})
+        exit (:exit (check proc))]
+    exit))
+
 (defn cmd-run
   [cmd]
   (let [proc (process {:cmd cmd :inherit true :encoding "UTF-8"})
@@ -61,13 +67,21 @@
 
 (defn set-system-env-var
   [var-name var-value]
-  (let [var-value-set (into #{} (s/split var-value #";"))
+  (let [var-value-set (into (sorted-set) (s/split var-value #";"))
         new-var-value (s/join ";" (map #(str %) var-value-set))
-        cmd (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d \"" new-var-value "\" /f")]
-    (cmd-run (str "cmd /c " cmd))))
+        command (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d \"" new-var-value "\" /f")]
+    (cmd-run-quite (str "cmd /c " command))))
 
 (defn add-path
   [new-path-value]
   (let [path (get-system-env-var "PATH")
         new-path (str path ";" new-path-value)]
+    (set-system-env-var "PATH" new-path)
+    (println "Update PATH Successfully")))
+
+(defn remove-path
+  [path-value]
+  (let [path (get-system-env-var "PATH")
+        path-set (into (sorted-set) (s/split path #";"))
+        new-path (s/join ";" (remove #(s/includes? % path-value) path-set))]
     (set-system-env-var "PATH" new-path)))

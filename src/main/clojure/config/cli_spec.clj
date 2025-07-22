@@ -51,6 +51,9 @@
   {:self-install {:alias :si
                   :desc "install self"
                   :coerce :boolean}
+   :unregistry {:alias :un
+                :desc "unregistry shims"
+                :coerce :boolean}
    :install {:alias :i
              :desc "install package"}
    :update {:alias :u

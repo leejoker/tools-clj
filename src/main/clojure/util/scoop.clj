@@ -4,7 +4,7 @@
    [babashka.fs :as fs]
    [config.config :refer [create-plugin-dir tools-home]]
    [util.git :refer [clone-repo]]
-   [util.os :refer [create-dirs ps-version? string-format cmd-run add-path]]))
+   [util.os :refer [create-dirs ps-version? string-format cmd-run add-path remove-path]]))
 
 (def ^:const SCOOP_PACKAGE_GIT_REPO "http://leejoker.top:11566/https://github.com/ScoopInstaller/Scoop.git")
 
@@ -61,7 +61,7 @@
       (spit k v))))
 
 (defn install-scoop
-  []
+  [_]
   (if (ps-version?)
     (let [shims (:shims (tools-home))
           scoop-dir      (create-plugin-dir "scoop")
@@ -75,8 +75,7 @@
         (clone-repo v k 0))
       (write-scoop-shims-file scoop-app-dir)
       (add-path shims)
-      (println "Scoop Installed Successfully!")
-      (System/exit 0))
+      (println "Scoop Installed Successfully!"))
     (println "Please upgrade your PowerShell version to 5.1 or higher.")))
 
 (defn install-app
@@ -89,3 +88,11 @@
       (doseq [file (fs/list-dir (fs/path scoop-dir "shims"))]
         (fs/move file (fs/path shims (fs/file-name file)) {:replace-existing false})))
     (catch Exception _)))
+
+(defn unregistry-shims
+  [_]
+  (let [shims (:shims (tools-home))
+        plugin-shims (str (fs/absolutize (fs/path (create-plugin-dir "scoop") "shims")))]
+    (remove-path shims)
+    (remove-path plugin-shims)
+    (println "Unregistered Shims Successfully!")))

@@ -15,7 +15,11 @@
 
 (defmethod pkg-runner :self-install
   [_]
-  (cmd-runner (scoop/install-scoop) nil nil))
+  (cmd-runner scoop/install-scoop nil nil))
+
+(defmethod pkg-runner :unregistry
+  [_]
+  (cmd-runner scoop/unregistry-shims nil nil))
 
 (defmethod pkg-runner :install
   [pkg-name]
