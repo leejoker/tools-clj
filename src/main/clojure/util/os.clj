@@ -5,6 +5,10 @@
    [babashka.process :refer [shell process check]]
    [clojure.string :as s]))
 
+(defn equal-ignore-case?
+  [a b]
+  (= (s/lower-case a) (s/lower-case b)))
+
 (defn create-dirs
   [path]
   (when-not (fs/exists? path)

@@ -59,7 +59,9 @@
    :update {:alias :u
             :desc "update package"}
    :remove {:alias :r
-            :desc "remove package"}})
+            :desc "remove package"}
+   :clean {:alisas :cl
+           :desc "clean cache and old version"}})
 
 (def cli-args
   [{:cmds ["new"]

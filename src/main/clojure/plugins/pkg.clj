@@ -25,6 +25,18 @@
   [pkg-name]
   (cmd-runner scoop/install-app nil pkg-name))
 
+(defmethod pkg-runner :remove
+  [pkg-name]
+  (cmd-runner scoop/uninstall-app nil pkg-name))
+
+(defmethod pkg-runner :update
+  [pkg-name]
+  (cmd-runner scoop/update-app nil pkg-name))
+
+(defmethod pkg-runner :clean
+  [pkg-name]
+  (cmd-runner scoop/clean-scoop nil pkg-name))
+
 (defmethod pkg-runner :default
   [_]
   (println "Unknown or missing command."))

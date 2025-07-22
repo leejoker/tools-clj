@@ -3,8 +3,10 @@
   (:require
    [babashka.fs :as fs]
    [config.config :refer [create-plugin-dir tools-home]]
+   [util.global :refer [try-pe]]
    [util.git :refer [clone-repo]]
-   [util.os :refer [create-dirs ps-version? string-format cmd-run add-path remove-path]]))
+   [util.os :refer [create-dirs ps-version? string-format cmd-run add-path remove-path equal-ignore-case?]]
+   [clojure.string :as s]))
 
 (def ^:const SCOOP_PACKAGE_GIT_REPO "http://leejoker.top:11566/https://github.com/ScoopInstaller/Scoop.git")
 
@@ -60,6 +62,30 @@
     (doseq [[k v] scoop-shims]
       (spit k v))))
 
+(defn clean-shims
+  []
+  (try-pe
+   (let [shims (:shims (tools-home))
+         files-in-shim (fs/list-dir shims)
+         shim-files (filter #(= (fs/extension %) "shim") files-in-shim)]
+     (doseq [f shim-files]
+       (let [origin-file (-> (fs/absolutize f)
+                             str
+                             slurp
+                             (s/split #"=")
+                             second
+                             (s/replace "\"" "")
+                             (s/trim)
+                             (s/trim-newline))]
+         (when-not (fs/exists? origin-file)
+           (fs/delete (first (filter #(equal-ignore-case? (fs/file-name %) (fs/file-name origin-file)) files-in-shim)))
+           (fs/delete f)))))))
+
+(defn remove-plugin-shims-env
+  []
+  (let [plugin-shims (str (fs/absolutize (fs/path (create-plugin-dir "scoop") "shims")))]
+    (remove-path plugin-shims)))
+
 (defn install-scoop
   [_]
   (if (ps-version?)
@@ -80,19 +106,48 @@
 
 (defn install-app
   [{:keys [options]}]
-  (try
-    (let [shims (:shims (tools-home))
-          scoop-dir (create-plugin-dir "scoop")
-          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
-      (cmd-run (str "cmd.exe /c " scoop-cmd " install " options))
-      (doseq [file (fs/list-dir (fs/path scoop-dir "shims"))]
-        (fs/move file (fs/path shims (fs/file-name file)) {:replace-existing false})))
-    (catch Exception _)))
+  (try-pe
+   (let [shims (:shims (tools-home))
+         scoop-dir (create-plugin-dir "scoop")
+         scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
+     (cmd-run (str "cmd.exe /c " scoop-cmd " install " options))
+     (doseq [file (fs/list-dir (fs/path scoop-dir "shims"))]
+       (try
+         (fs/move file (fs/path shims (fs/file-name file)) {:replace-existing false})
+         (catch Exception _
+           (fs/delete file)))))
+   (remove-plugin-shims-env)))
 
 (defn unregistry-shims
   [_]
-  (let [shims (:shims (tools-home))
-        plugin-shims (str (fs/absolutize (fs/path (create-plugin-dir "scoop") "shims")))]
+  (let [shims (:shims (tools-home))]
     (remove-path shims)
-    (remove-path plugin-shims)
+    (remove-plugin-shims-env)
     (println "Unregistered Shims Successfully!")))
+
+(defn uninstall-app
+  [{:keys [options]}]
+  (try-pe
+   (let [shims (:shims (tools-home))
+         scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
+     (cmd-run (str "cmd.exe /c " scoop-cmd " uninstall " options))
+     (clean-shims))
+   (remove-plugin-shims-env)))
+
+(defn update-app
+  [{:keys [options]}]
+  (try-pe
+   (let [shims (:shims (tools-home))
+         scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
+     (cmd-run (str "cmd.exe /c " scoop-cmd " update " options)))
+   (remove-plugin-shims-env)))
+
+(defn clean-scoop
+  [_]
+  (try-pe
+   (let [shims (:shims (tools-home))
+         scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
+     (cmd-run (str "cmd.exe /c " scoop-cmd " cache rm * "))
+     (cmd-run (str "cmd.exe /c " scoop-cmd " cleanup * "))
+     (clean-shims))
+   (remove-plugin-shims-env)))
