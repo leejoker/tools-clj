@@ -1,7 +1,5 @@
 # Tools For Project Developing written in Clojure
 
-## Features
+## upx compress
 
-- init project dirs
-- add build.clj and deps.edn
-- base tools for developing
+[upx compress fix](https://github.com/upx/upx/issues/670#issuecomment-2869306660)
