@@ -2,7 +2,8 @@
   (:gen-class)
   (:require
    [clojure.string :as str]
-   [babashka.fs :as fs]))
+   [babashka.fs :as fs]
+   [util.global :refer [tryp]]))
 
 (defrecord Config [jetbrains-apps jetbrains-config])
 
@@ -41,14 +42,14 @@
             (spit (fs/file f) (str/join \newline new-content))))
         (println "==========================================================")))))
 
-
 (defn run-cjp
-  []
-  (let [jetbrains-home (System/getenv "JETBRAINS_HOME")]
-    (if (nil? jetbrains-home)
-      (println "JETBRAINS_HOME not found")
-      (do
-        (println (str "JetBrains Home: " jetbrains-home))
-        (println "==========================================================")
-        (modify-properties (Config. (str jetbrains-home "/apps")
-                                    (str jetbrains-home "/tool-data")))))))
+  [_]
+  (tryp
+   (let [jetbrains-home (System/getenv "JETBRAINS_HOME")]
+     (if (nil? jetbrains-home)
+       (println "JETBRAINS_HOME not found")
+       (do
+         (println (str "JetBrains Home: " jetbrains-home))
+         (println "==========================================================")
+         (modify-properties (Config. (str jetbrains-home "/apps")
+                                     (str jetbrains-home "/tool-data"))))))))

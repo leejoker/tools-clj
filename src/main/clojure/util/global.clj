@@ -1,15 +1,18 @@
 (ns util.global
-  (:gen-class))
+  (:gen-class)
+  (:require [babashka.fs :as fs]
+            [util.os :refer [env-path]]))
 
 (defmacro try-pe
-  [& body]
+  [expr & body]
   `(try
      ~@body
      (catch Exception e#
-       (println "Failed: " e#))))
+       (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))]
+         (spit log-path# (str e# (System/lineSeparator)) :append true))
+       (when-not (nil? ~expr)
+         ~expr))))
 
-(defmacro try-npe
+(defmacro tryp
   [& body]
-  `(try
-     ~@body
-     (catch Exception _#)))
+  (list 'util.global/try-pe nil body))

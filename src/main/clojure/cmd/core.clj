@@ -2,7 +2,8 @@
   (:gen-class)
   (:require
    [babashka.cli :as cli]
-   [config.cli-spec :refer [cli-args cmd-info]]))
+   [config.cli-spec :refer [cli-args cmd-info]]
+   [util.global :refer [try-pe]]))
 
 (defn handle-unknown-command [args]
   (println "Unknown Command: " (first args))
@@ -12,7 +13,5 @@
 
 (defn -main
   [& args]
-  (try
-    (cli/dispatch cli-args (map identity args))
-    (catch Exception _
-      (handle-unknown-command args))))
+  (try-pe (handle-unknown-command args)
+          (cli/dispatch cli-args (map identity args))))

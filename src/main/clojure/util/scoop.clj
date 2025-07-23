@@ -3,7 +3,7 @@
   (:require
    [babashka.fs :as fs]
    [config.config :refer [create-plugin-dir tools-home]]
-   [util.global :refer [try-pe]]
+   [util.global :refer [tryp]]
    [util.git :refer [clone-repo]]
    [util.os :refer [create-dirs ps-version? string-format cmd-run add-path remove-path equal-ignore-case?]]
    [clojure.string :as s]))
@@ -64,7 +64,7 @@
 
 (defn clean-shims
   []
-  (try-pe
+  (tryp
    (let [shims (:shims (tools-home))
          files-in-shim (fs/list-dir shims)
          shim-files (filter #(= (fs/extension %) "shim") files-in-shim)]
@@ -106,7 +106,7 @@
 
 (defn install-app
   [{:keys [options]}]
-  (try-pe
+  (tryp
    (let [shims (:shims (tools-home))
          scoop-dir (create-plugin-dir "scoop")
          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
@@ -127,7 +127,7 @@
 
 (defn uninstall-app
   [{:keys [options]}]
-  (try-pe
+  (tryp
    (let [shims (:shims (tools-home))
          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
      (cmd-run (str "cmd.exe /c " scoop-cmd " uninstall " options))
@@ -136,7 +136,7 @@
 
 (defn update-app
   [{:keys [options]}]
-  (try-pe
+  (tryp
    (let [shims (:shims (tools-home))
          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
      (cmd-run (str "cmd.exe /c " scoop-cmd " update " options)))
@@ -144,7 +144,7 @@
 
 (defn clean-scoop
   [_]
-  (try-pe
+  (tryp
    (let [shims (:shims (tools-home))
          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
      (cmd-run (str "cmd.exe /c " scoop-cmd " cache rm * "))
