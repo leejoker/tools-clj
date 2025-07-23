@@ -10,8 +10,7 @@
      (catch Exception e#
        (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))]
          (spit log-path# (str e# (System/lineSeparator)) :append true))
-       (when-not (nil? ~expr)
-         ~expr))))
+       ~expr)))
 
 (defmacro tryp
   [& body]
