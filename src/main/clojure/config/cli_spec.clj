@@ -88,7 +88,7 @@
 
 (defn print-help
   "Prints help information for commands."
-  ([] (println "Usage: command [options]")
+  ([] (println "Usage: <command> [options]")
       (doseq [[cmd desc] cmd-info]
         (println cmd "\t" desc)))
   ([cmd]
