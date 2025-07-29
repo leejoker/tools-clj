@@ -55,11 +55,11 @@
                 :desc "unregistry shims"
                 :coerce :boolean}
    :install {:alias :i
-             :desc "install package"}
+             :desc "install package, tcl pkg install <package_name>"}
    :update {:alias :u
-            :desc "update package"}
+            :desc "update package, tcl pkg update <package_name>"}
    :remove {:alias :r
-            :desc "remove package"}
+            :desc "remove package, tcl pkg remove <package_name>"}
    :clean {:alisas :cl
            :desc "clean cache and old version"}})
 
@@ -72,3 +72,28 @@
     :fn   list-current-path-files :spec list-spec}
    {:cmds ["pkg"]
     :fn   pkg-run :spec pkg-spec}])
+
+(defn print-command-options
+  "Prints the options for a given command spec, with aligned columns."
+  [cmd spec]
+  (if (empty? spec)
+    (println "No options available for this command.")
+    (do
+      (println "Usage: " cmd " [options]")
+      (let [max-key-len (apply max (map (comp count name first) spec))]
+        (doseq [[key {:keys [desc]}] spec]
+          (let [key-str (name key)
+                padding (apply str (repeat (- max-key-len (count key-str)) " "))]
+            (println key-str padding "\t" desc)))))))
+
+(defn print-help
+  "Prints help information for commands."
+  ([] (println "Usage: command [options]")
+      (doseq [[cmd desc] cmd-info]
+        (println cmd "\t" desc)))
+  ([cmd]
+   (if (nil? cmd)
+     (print-help)
+     (if-let [cmd-spec (first (filter #(= cmd (first (:cmds %))) cli-args))]
+       (print-command-options cmd (:spec cmd-spec))
+       (println "Unknown command:" cmd)))))
