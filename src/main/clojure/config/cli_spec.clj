@@ -4,11 +4,13 @@
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
-   [plugins.pkg :refer [pkg-run]]))
+   [plugins.pkg :refer [pkg-run]]
+   [util.git :refer [clone-repo]]))
 
 (def cmd-info
   {"new"  "create clojure project"
    "cjp"  "change paths in idea.properties"
+   "clone" "clone repository from github"
    "list" "list files in current path"
    "pkg"  "package management with scoop on windows and brew on others"})
 
@@ -68,6 +70,8 @@
     :fn   create-project}
    {:cmds ["cjp"]
     :fn   run-cjp}
+   {:cmds ["clone"]
+    :fn clone-repo}
    {:cmds ["list"]
     :fn   list-current-path-files :spec list-spec}
    {:cmds ["pkg"]

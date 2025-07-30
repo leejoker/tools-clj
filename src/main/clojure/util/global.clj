@@ -8,9 +8,12 @@
   `(try
      ~@body
      (catch Exception e#
-       (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))]
-         (spit log-path# (str e# (System/lineSeparator)) :append true))
-       ~expr)))
+       (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))
+             cause# (:cause (.getData e#))]
+         (spit log-path# (str e# (System/lineSeparator)) :append true)
+         (if (or (= cause# :no-match) (= cause# :input-exhausted))
+           ~expr
+           (println "Error: " e#))))))
 
 (defmacro tryp
   [& body]
