@@ -11,13 +11,14 @@
            :recursive - boolean, remove directories and their contents recursively (default false)"
   [paths {:keys [force recursive] :or {force false recursive false}}]
   (doseq [path paths]
-    (try
-      (if recursive
-        (fs/delete-tree path)
-        (fs/delete path))
-      (catch Exception e
-        (when-not force
-          (throw e))))))
+    (when (fs/exists? path)
+      (try
+        (if recursive
+          (fs/delete-tree path)
+          (fs/delete path))
+        (catch Exception e
+          (when-not force
+            (throw e)))))))
 
 (defn run-rm
   [{:keys [opts args]}]

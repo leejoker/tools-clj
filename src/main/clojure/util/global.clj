@@ -9,7 +9,7 @@
      ~@body
      (catch Exception e#
        (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))
-             cause# (:cause (.getData e#))]
+             cause# (if (instance? clojure.lang.ExceptionInfo e#) (:cause (.getData e#)) e#)]
          (spit log-path# (str e# (System/lineSeparator)) :append true)
          (if (or (= cause# :no-match) (= cause# :input-exhausted))
            ~expr
