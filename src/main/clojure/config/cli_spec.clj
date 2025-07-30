@@ -3,6 +3,7 @@
   (:require
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
+   [console.rm :refer [run-rm]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
    [plugins.pkg :refer [pkg-run]]
    [util.git :refer [clone-repo]]))
@@ -12,7 +13,8 @@
    "cjp"  "change paths in idea.properties"
    "clone" "clone repository from github"
    "list" "list files in current path"
-   "pkg"  "package management with scoop on windows and brew on others"})
+   "pkg"  "package management with scoop on windows and brew on others"
+   "rm"   "remove files or directories"})
 
 (def list-spec
   {:all {:alias :a
@@ -65,6 +67,14 @@
    :clean {:alisas :cl
            :desc "clean cache and old version"}})
 
+(def rm-spec
+  {:force {:alias :f
+           :desc "ignore nonexistent files and arguments"
+           :coerce :boolean}
+   :recursive {:alias :r
+               :desc "remove directories and their contents recursively"
+               :coerce :boolean}})
+
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
@@ -75,7 +85,9 @@
    {:cmds ["list"]
     :fn   list-current-path-files :spec list-spec}
    {:cmds ["pkg"]
-    :fn   pkg-run :spec pkg-spec}])
+    :fn   pkg-run :spec pkg-spec}
+   {:cmds ["rm"]
+    :fn   run-rm :spec rm-spec}])
 
 (defn print-command-options
   "Prints the options for a given command spec, with aligned columns."
