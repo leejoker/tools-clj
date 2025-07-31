@@ -1,7 +1,8 @@
 (ns util.global
   (:gen-class)
   (:require [babashka.fs :as fs]
-            [util.os :refer [env-path]]))
+            [util.os :refer [env-path]]
+            [clojure.string :as s]))
 
 (defmacro try-pe
   [expr & body]
@@ -9,11 +10,11 @@
      ~@body
      (catch Exception e#
        (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))
-             cause# (if (instance? clojure.lang.ExceptionInfo e#) (:cause (.getData e#)) e#)]
-         (spit log-path# (str e# (System/lineSeparator)) :append true)
-         (if (or (= cause# :no-match) (= cause# :input-exhausted))
-           ~expr
-           (println "Error: " e#))))))
+             error-msg# (str e#)]
+         (spit log-path# (str error-msg# (System/lineSeparator)) :append true)
+         (when (or (s/includes? error-msg# ":no-match")
+                   (s/includes? error-msg# ":input-exhausted"))
+           ~expr)))))
 
 (defmacro tryp
   [& body]

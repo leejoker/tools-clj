@@ -14,4 +14,3 @@
                        :ns-default build}
            :cider-clj {:extra-deps {cider/cider-nrepl {:mvn/version "0.57.0"}}
                        :main-opts  ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}}}
- 

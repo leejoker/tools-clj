@@ -14,6 +14,11 @@ echo "build uber jar done"
 
 native-image \
     -jar "target/tools-clj-$VERSION-standalone.jar" \
+    -J-Dfile.encoding=UTF-8 \
+    -J-Dstdout.encoding=UTF-8 \
+    -J-Dstderr.encoding=UTF-8 \
+    -J-Dconsole.encoding=UTF-8 \
+    -H:+AddAllCharsets \
     -H:+ReportExceptionStackTraces \
     --enable-http \
     --enable-https \

@@ -4,6 +4,7 @@
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
    [console.rm :refer [run-rm]]
+   [console.kill :refer [run-kill]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
    [plugins.pkg :refer [pkg-run]]
    [util.git :refer [clone-repo]]))
@@ -14,7 +15,8 @@
    "clone" "clone repository from github"
    "list" "list files in current path"
    "pkg"  "package management with scoop on windows and brew on others"
-   "rm"   "remove files or directories"})
+   "rm"   "remove files or directories"
+   "kill" "kill process by name"})
 
 (def list-spec
   {:all {:alias :a
@@ -67,14 +69,6 @@
    :clean {:alisas :cl
            :desc "clean cache and old version"}})
 
-(def rm-spec
-  {:force {:alias :f
-           :desc "ignore nonexistent files and arguments"
-           :coerce :boolean}
-   :recursive {:alias :r
-               :desc "remove directories and their contents recursively"
-               :coerce :boolean}})
-
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
@@ -87,7 +81,9 @@
    {:cmds ["pkg"]
     :fn   pkg-run :spec pkg-spec}
    {:cmds ["rm"]
-    :fn   run-rm :spec rm-spec}])
+    :fn   run-rm}
+   {:cmds ["kill"]
+    :fn   run-kill}])
 
 (defn print-command-options
   "Prints the options for a given command spec, with aligned columns."
