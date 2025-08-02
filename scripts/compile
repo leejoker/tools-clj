@@ -22,7 +22,6 @@ native-image \
     -H:+ReportExceptionStackTraces \
     --enable-http \
     --enable-https \
-    --features=com.oracle.svm.core.os.ForcedCopyingImageHeapProviderFeature \
     --features=clj_easy.graal_build_time.InitClojureClasses \
     --initialize-at-build-time=com.fasterxml.jackson.dataformat.cbor.CBORFactoryBuilder \
     --initialize-at-build-time=com.fasterxml.jackson.core.StreamReadFeature \
