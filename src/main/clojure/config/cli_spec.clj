@@ -1,6 +1,7 @@
 (ns config.cli-spec
   (:gen-class)
   (:require
+   [babashka.cli :as cli]
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
    [console.rm :refer [run-rm]]
@@ -55,7 +56,7 @@
 
 (def pkg-spec
   {:self-install {:alias :si
-                  :desc "install self"
+                  :desc "install package manager, scoop on windows and brew on unix"
                   :coerce :boolean}
    :unregistry {:alias :un
                 :desc "unregistry shims"
@@ -66,7 +67,7 @@
             :desc "update package, tcl pkg update <package_name>"}
    :remove {:alias :r
             :desc "remove package, tcl pkg remove <package_name>"}
-   :clean {:alisas :cl
+   :clean {:alisas :c
            :desc "clean cache and old version"}})
 
 (def cli-args
@@ -85,18 +86,9 @@
    {:cmds ["kill"]
     :fn   run-kill}])
 
-(defn print-command-options
-  "Prints the options for a given command spec, with aligned columns."
-  [cmd spec]
-  (if (empty? spec)
-    (println "No options available for this command.")
-    (do
-      (println "Usage: " cmd " [options]")
-      (let [max-key-len (apply max (map (comp count name first) spec))]
-        (doseq [[key {:keys [desc]}] spec]
-          (let [key-str (name key)
-                padding (apply str (repeat (- max-key-len (count key-str)) " "))]
-            (println key-str padding "\t" desc)))))))
+(defn show-help
+  [spec]
+  (cli/format-opts (merge spec {:order (vec (keys (:spec spec)))})))
 
 (defn print-help
   "Prints help information for commands."
@@ -107,5 +99,7 @@
    (if (nil? cmd)
      (print-help)
      (if-let [cmd-spec (first (filter #(= cmd (first (:cmds %))) cli-args))]
-       (print-command-options cmd (:spec cmd-spec))
+       (do
+         (println "Usage: tcl" cmd "[options]")
+         (println (show-help {:spec (:spec cmd-spec)})))
        (println "Unknown command:" cmd)))))
