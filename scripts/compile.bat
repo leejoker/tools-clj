@@ -1,7 +1,7 @@
 @echo off
 
 set VERSION=0.0.2
-set ENCODING=GBK
+set ENCODING=UTF-8
 
 echo VERSION: %VERSION%
 echo ENCODING: %ENCODING%
