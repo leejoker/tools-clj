@@ -9,8 +9,11 @@
 
 (defn find-properties-files
   [^Config config]
-  (let [dirs (fs/list-dir (:jetbrains-apps config))]
-    (map #(fs/path % "bin" "idea.properties") dirs)))
+  (let [dirs (fs/list-dir (:jetbrains-apps config))
+        path-file (fn [path] (fs/file path "bin" "idea.properties"))
+        path-exists (fn [path] (fs/exists? (path-file path)))]
+    (filter #(not (nil? %))
+            (map #(if (path-exists %) (fs/path (path-file %)) nil) dirs))))
 
 (defn replace-lines
   [config]
