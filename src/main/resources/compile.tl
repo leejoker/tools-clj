@@ -1,15 +1,42 @@
 #!/bin/bash
 
-clojure -T:build uber
-
 PROJECT_NAME=${artifactId}
 VERSION=$(cat ./VERSION)
 EXEC_NAME=${artifactId}
 
+echo "VERSION: $VERSION"
+
+clojure -T:build clean
+
+echo "clean done"
+
+clojure -T:build uber
+
+echo "build uber jar done"
+
 native-image \
     -jar "target/$PROJECT_NAME-$VERSION-standalone.jar" \
+    -J-Dfile.encoding=UTF-8 \
+    -J-Dstdout.encoding=UTF-8 \
+    -J-Dstderr.encoding=UTF-8 \
+    -J-Dconsole.encoding=UTF-8 \
+    -H:+AddAllCharsets \
     -H:+ReportExceptionStackTraces \
+    --enable-http \
+    --enable-https \
     --features=clj_easy.graal_build_time.InitClojureClasses \
+    --initialize-at-build-time=com.fasterxml.jackson.dataformat.cbor.CBORFactoryBuilder \
+    --initialize-at-build-time=com.fasterxml.jackson.core.StreamReadFeature \
+    --initialize-at-build-time=com.fasterxml.jackson.dataformat.cbor.CBORFactory \
+    --initialize-at-build-time=com.fasterxml.jackson.core.JsonGenerator \
+    --initialize-at-build-time=com.fasterxml.jackson.dataformat.smile.SmileFactory \
+    --initialize-at-build-time=com.fasterxml.jackson.core.json.JsonReadFeature \
+    --initialize-at-build-time=com.fasterxml.jackson.core.io.SerializedString \
+    --initialize-at-build-time=com.fasterxml.jackson.core.TSFBuilder \
+    --initialize-at-build-time=com.fasterxml.jackson.core.JsonFactory \
+    --initialize-at-build-time=com.fasterxml.jackson.core.io.CharTypes \
+    --initialize-at-build-time=com.fasterxml.jackson.dataformat.smile.SmileFactoryBuilder \
+    --initialize-at-build-time=com.fasterxml.jackson.core.io.JsonStringEncoder \
     --verbose \
     --no-fallback \
     -o $EXEC_NAME
