@@ -6,6 +6,7 @@
    [console.ls :refer [list-current-path-files]]
    [console.rm :refer [run-rm]]
    [console.kill :refer [run-kill]]
+   [console.eol :refer [run-eol]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
    [plugins.pkg :refer [pkg-run]]
    [util.git :refer [clone-repo]]))
@@ -17,7 +18,8 @@
    "list" "list files in current path"
    "pkg"  "package management with scoop on windows and brew on others"
    "rm"   "remove files or directories"
-   "kill" "kill process by name"})
+   "kill" "kill process by name"
+   "eol" "change file eol, just like dos2unix"})
 
 (def list-spec
   {:all {:alias :a
@@ -70,6 +72,17 @@
    :clean {:alisas :c
            :desc "clean cache and old version"}})
 
+(def eol-spec
+  {:type {:alias :t
+          :desc "target eol type, example: --type LF/CRLF"
+          :coerce :string}
+   :extension {:alias :x
+               :desc "file extension, example: txt"
+               :coerce :string}
+   :hidden {:alias :h
+            :desc "available to change hidden dir and file"
+            :coerce :boolean}})
+
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
@@ -84,7 +97,9 @@
    {:cmds ["rm"]
     :fn   run-rm}
    {:cmds ["kill"]
-    :fn   run-kill}])
+    :fn   run-kill}
+   {:cmds ["eol"]
+    :fn   run-eol :spec eol-spec}])
 
 (defn show-help
   [spec]
