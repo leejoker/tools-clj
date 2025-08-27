@@ -68,8 +68,9 @@
     user-input-map))
 
 (defn create-project
-  [project-name]
-  (let [path (fs/path "." project-name)
+  [{:keys [args]}]
+  (let [project-name (first args)
+        path (fs/path "." project-name)
         opts (read-user-input project-name)]
     (create-project-structure path)
     (add-config "core.clj" (fs/path path "src" "main" "clojure") nil opts)
