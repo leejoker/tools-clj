@@ -48,6 +48,7 @@
               :jar-file  jar-file}))
 
 (defn uber [_]
+      (compile-all nil)
       (b/uber {:class-dir class-dir
                :uber-file uber-file
                :basis     @basis
