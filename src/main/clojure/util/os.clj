@@ -2,6 +2,7 @@
   (:gen-class)
   (:require
    [babashka.fs :as fs]
+   [cheshire.core :as json]
    [babashka.process :refer [shell process check]]
    [clojure.string :as s]))
 
@@ -26,12 +27,21 @@
                tools-clj-home)]
     (create-dirs (fs/path path))))
 
+(defn load-config
+  [key default-value]
+  (let [config-file (fs/path (env-path) ".tclrc")]
+    (if (fs/exists? config-file)
+      (let [v (key (json/parse-string (slurp (str (fs/absolutize config-file))) true))]
+        (if (nil? v)
+          default-value
+          v))
+      default-value)))
+
 (defn cmd
   [command]
   (-> (shell {:out :string :inherit true} command)
       :out
-      s/split-lines
-      first))
+      s/split-lines))
 
 (defn cmd-run-quite
   [cmd]
@@ -49,7 +59,7 @@
   []
   (try
     (let [v (Double/parseDouble
-             (cmd "powershell.exe -Command $PSVersionTable.PSVersion.ToString(2)"))]
+             (first (cmd "powershell.exe -Command $PSVersionTable.PSVersion.ToString(2)")))]
       (>= v 5.1))
     (catch Exception e
       (println e)

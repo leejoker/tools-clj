@@ -5,6 +5,7 @@
    [config.project-template :refer [create-project]]
    [console.ls :refer [list-current-path-files]]
    [console.rm :refer [run-rm]]
+   [console.ocr :refer [run-ocr]]
    [console.kill :refer [run-kill]]
    [console.eol :refer [run-eol]]
    [plugins.change-jetbrains-path :refer [run-cjp]]
@@ -19,6 +20,7 @@
    "pkg"  "package management with scoop on windows and brew on others"
    "rm"   "remove files or directories"
    "kill" "kill process by name"
+   "ocr"  "ocr image"
    "eol" "change file eol, just like dos2unix"})
 
 (def list-spec
@@ -98,6 +100,8 @@
     :fn   run-rm}
    {:cmds ["kill"]
     :fn   run-kill}
+   {:cmds ["ocr"]
+    :fn   run-ocr}
    {:cmds ["eol"]
     :fn   run-eol :spec eol-spec}])
 

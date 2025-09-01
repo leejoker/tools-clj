@@ -2,9 +2,8 @@
   (:gen-class)
   (:require
    [babashka.fs :as fs]
-   [cheshire.core :as json]
    [util.draw-table :as dt :refer [column-sub column-width]]
-   [util.os :refer [env-path]])
+   [util.os :refer [load-config]])
   (:import
    (java.nio.file.attribute FileTime)
    (java.time ZoneId)
@@ -37,10 +36,7 @@
 
 (defn default-column-width
   [default-value]
-  (let [config-file (fs/path (env-path) ".tclrc")]
-    (if (fs/exists? config-file)
-      (int (:filenameMaxWidth (json/parse-string (slurp (str (fs/absolutize config-file))) true)))
-      default-value)))
+  (load-config :filenameMaxWidth default-value))
 
 (defn handle-col-width
   [column]
