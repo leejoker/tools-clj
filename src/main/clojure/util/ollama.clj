@@ -1,7 +1,8 @@
 (ns util.ollama
   (:gen-class)
   (:require [babashka.http-client :refer [post]]
-            [cheshire.core :as json]))
+            [cheshire.core :as json]
+            [util.global :refer [debug]]))
 
 (defn generate
   [base-url model-name prompt images]
@@ -12,5 +13,7 @@
                (if (empty? images)
                  default-body
                  (assoc default-body :images images)))
-        resp (post url {:body (json/encode body)})]
-    (:response (json/decode (:body resp) true))))
+        resp (post url {:body (json/encode body)})
+        resp-body (json/decode (:body resp) true)]
+    (debug resp-body)
+    (:response resp-body)))

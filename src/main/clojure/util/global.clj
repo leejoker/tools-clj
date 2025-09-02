@@ -1,8 +1,14 @@
 (ns util.global
   (:gen-class)
   (:require [babashka.fs :as fs]
-            [util.os :refer [env-path]]
+            [util.os :refer [env-path load-config]]
             [clojure.string :as s]))
+
+(defn debug
+  [msg]
+  (let [debug (load-config :debug false)]
+    (when debug
+      (println msg))))
 
 (defmacro try-pe
   [expr & body]
