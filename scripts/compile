@@ -35,6 +35,8 @@ native-image \
     --initialize-at-build-time=com.fasterxml.jackson.core.io.CharTypes \
     --initialize-at-build-time=com.fasterxml.jackson.dataformat.smile.SmileFactoryBuilder \
     --initialize-at-build-time=com.fasterxml.jackson.core.io.JsonStringEncoder \
+    --initialize-at-build-time=com.fasterxml.jackson.core.PrettyPrinter \
+    --initialize-at-build-time=com.fasterxml.jackson.core.json.JsonWriteFeature \
     --verbose \
     --no-fallback \
     -o tcl
