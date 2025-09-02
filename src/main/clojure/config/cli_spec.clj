@@ -85,6 +85,11 @@
             :desc "available to change hidden dir and file"
             :coerce :boolean}})
 
+(def ocr-spec
+  {:type {:alias :t
+          :desc "ocr type, local or deepseek, deepseek is default, if use local, you should install tesseract and tesseract-languages"
+          :coerce :string}})
+
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
@@ -101,7 +106,7 @@
    {:cmds ["kill"]
     :fn   run-kill}
    {:cmds ["ocr"]
-    :fn   run-ocr}
+    :fn   run-ocr :spec ocr-spec}
    {:cmds ["eol"]
     :fn   run-eol :spec eol-spec}])
 

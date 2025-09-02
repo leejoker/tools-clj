@@ -4,7 +4,8 @@
    [babashka.fs :as fs]
    [cheshire.core :as json]
    [babashka.process :refer [shell process check]]
-   [clojure.string :as s]))
+   [clojure.string :as s])
+  (:import [java.util Base64]))
 
 (defn equal-ignore-case?
   [a b]
@@ -99,3 +100,9 @@
         path-set (into (sorted-set) (s/split path #";"))
         new-path (s/join ";" (remove #(s/includes? % path-value) path-set))]
     (set-system-env-var "PATH" new-path)))
+
+(defn base64-encode
+  [path]
+  (let [bytes (fs/read-all-bytes (fs/absolutize path))
+        base64 (.encodeToString (Base64/getEncoder) bytes)]
+    base64))
