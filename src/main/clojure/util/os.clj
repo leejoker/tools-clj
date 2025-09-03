@@ -53,7 +53,7 @@
 (defn save-config-file
   [json]
   (let [f (config-file)]
-    (spit (str (fs/absolutize f)) (json/encode json) :append false)))
+    (spit (str (fs/absolutize f)) (json/encode json {:pretty true}) :append false)))
 
 (defn load-config
   [key default-value]

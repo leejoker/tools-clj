@@ -6,6 +6,6 @@
   [{:keys [args]}]
   (if (empty? args)
     (println "Please set enabled or disabled, debug command must have a parameter.")
-    (let [enabled? (first args)
+    (let [enabled? (= (first args) "enabled")
           json (config-json)]
       (save-config-file (assoc json :debug enabled?)))))
