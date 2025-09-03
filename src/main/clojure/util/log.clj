@@ -1,6 +1,6 @@
 (ns util.log
   (:gen-class)
-  (:require [util.os :refer [log-time]]
+  (:require [util.os :refer [log-time load-config]]
             [clojure.string :as s]))
 
 (defn log
@@ -12,6 +12,7 @@
        (spit log-path log-content :append true)))))
 
 (defn debug
-  [debug msg]
-  (when debug
-    (log msg :debug)))
+  [msg]
+  (let [debug? (load-config :debug false)]
+    (when debug?
+      (log msg :debug))))

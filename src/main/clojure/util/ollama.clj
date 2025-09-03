@@ -2,8 +2,7 @@
   (:gen-class)
   (:require [babashka.http-client :refer [post]]
             [cheshire.core :as json]
-            [util.log :refer [debug]]
-            [util.os :refer [load-config]]))
+            [util.log :refer [debug]]))
 
 (defn generate
   [base-url model-name prompt images]
@@ -16,5 +15,5 @@
                  (assoc default-body :images images)))
         resp (post url {:body (json/encode body)})
         resp-body (json/decode (:body resp) true)]
-    (debug (load-config :debug false) resp-body)
+    (debug resp-body)
     (:response resp-body)))
