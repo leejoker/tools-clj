@@ -1,7 +1,7 @@
 (ns console.ocr
   (:gen-class)
   (:require [util.os :refer [load-config cmd-run cmd base64-encode]]
-            [util.global :refer [debug]]
+            [util.image-util :refer [png-valid?]]
             [babashka.fs :as fs]
             [clojure.string :as s]
             [util.ollama :as ollama]))
@@ -30,12 +30,10 @@
                    "帮我识别图片中的内容，并输出原始内容，不要包含其他的文字，也不要输出markdown格式的数据"
                    (conj [] (base64-encode image-path))))
 
-(defn save-content-to-clipboard
+(defn show-ocr-content
   [content]
-  (let [trim-content (s/trim-newline (s/replace (s/replace-first content #"```json\n" "") #"```" ""))]
-    (debug trim-content)
-    (cmd-run (str "powershell -NoProfile -Command \"Set-Clipboard -Value '" trim-content "'\""))
-    (System/exit 0)))
+  (let [trim-content (s/trim-newline (s/replace (s/replace-first content #"```(\w+)\n" "") #"```" ""))]
+    (println trim-content)))
 
 (defn run-ocr
   [{:keys [opts]}]
@@ -46,9 +44,9 @@
       (fs/delete image-path))
     (cmd-run capture-cmd)
     (loop [image image-path]
-      (if (and (fs/exists? image) (> (fs/size image) 0))
+      (if (and (fs/exists? image) (png-valid? image))
         (let [content (if (= (:type opts) "local")
                         (local-ocr (:tesseractPath config) image-path)
                         (ollama-ocr image-path (:base-url config) (:model-name config)))]
-          (save-content-to-clipboard content))
+          (show-ocr-content content))
         (recur image)))))

@@ -1,14 +1,9 @@
 (ns util.global
   (:gen-class)
   (:require [babashka.fs :as fs]
-            [util.os :refer [env-path load-config log-time]]
+            [util.os :refer [env-path]]
+            [util.log :refer [log]]
             [clojure.string :as s]))
-
-(defn debug
-  [msg]
-  (let [debug (load-config :debug false)]
-    (when debug
-      (println msg))))
 
 (defmacro try-pe
   [expr & body]
@@ -17,8 +12,7 @@
      (catch Exception e#
        (let [log-path# (str (fs/absolutize (fs/path (env-path) "error.log")))
              error-msg# (str e#)]
-         (spit log-path# (str "[" (log-time) "]" error-msg# (System/lineSeparator)) :append true)
-         (spit log-path# "----------------------------------------------------" :append true)
+         (log error-msg# :error log-path#)
          (when (or (s/includes? error-msg# ":no-match")
                    (s/includes? error-msg# ":input-exhausted"))
            ~expr)))))

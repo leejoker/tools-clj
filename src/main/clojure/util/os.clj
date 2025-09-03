@@ -112,18 +112,8 @@
         new-path (s/join ";" (remove #(s/includes? % path-value) path-set))]
     (set-system-env-var "PATH" new-path)))
 
-(defn debug
-  [msg]
-  (let [debug (load-config :debug false)]
-    (when debug
-      (println msg))))
-
 (defn base64-encode
   [path]
-  (let [abs-path (fs/absolutize path)]
-    (loop [file-size (fs/size abs-path)]
-      (if (> file-size 0)
-        (let [bytes (fs/read-all-bytes (fs/absolutize path))
-              base64 (.encodeToString (Base64/getEncoder) bytes)]
-          base64)
-        (recur (fs/size abs-path))))))
+  (let [bytes (fs/read-all-bytes (fs/absolutize path))
+        base64 (.encodeToString (Base64/getEncoder) bytes)]
+    base64))
