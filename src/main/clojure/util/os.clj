@@ -5,7 +5,18 @@
    [cheshire.core :as json]
    [babashka.process :refer [shell process check]]
    [clojure.string :as s])
-  (:import [java.util Base64]))
+  (:import [java.util Base64]
+           [java.time LocalDateTime]
+           [java.time.format DateTimeFormatter]))
+
+(defn date-formatter
+  []
+  (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
+
+(defn log-time
+  []
+  (let [now (LocalDateTime/now)]
+    (.format now (date-formatter))))
 
 (defn equal-ignore-case?
   [a b]

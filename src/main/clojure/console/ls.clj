@@ -3,13 +3,10 @@
   (:require
    [babashka.fs :as fs]
    [util.draw-table :as dt :refer [column-sub column-width]]
-   [util.os :refer [load-config]])
+   [util.os :refer [load-config date-formatter]])
   (:import
    (java.nio.file.attribute FileTime)
-   (java.time ZoneId)
-   (java.time.format DateTimeFormatter)))
-
-(def date-formatter (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
+   (java.time ZoneId)))
 
 (defn sort-file-infos
   [file-infos index reverse-file-list]
@@ -64,7 +61,7 @@
                             (.toInstant)
                             (.atZone (ZoneId/systemDefault))
                             (.toLocalDateTime))]
-    (.format local-date-time date-formatter)))
+    (.format local-date-time (date-formatter))))
 
 (defn ls-header
   []
