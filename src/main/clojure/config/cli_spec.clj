@@ -3,6 +3,7 @@
   (:require
    [babashka.cli :as cli]
    [config.project-template :refer [create-project]]
+   [config.debug-control :refer [debug-control]]
    [console.ls :refer [list-current-path-files]]
    [console.rm :refer [run-rm]]
    [console.ocr :refer [run-ocr]]
@@ -16,6 +17,7 @@
   {"new"  "create clojure project"
    "cjp"  "change paths in idea.properties"
    "clone" "clone repository from github"
+   "debug" "debug enabled/disabled"
    "list" "list files in current path"
    "pkg"  "package management with scoop on windows and brew on others"
    "rm"   "remove files or directories"
@@ -97,6 +99,8 @@
     :fn   run-cjp}
    {:cmds ["clone"]
     :fn clone-repo}
+   {:cmds ["debug"]
+    :fn debug-control}
    {:cmds ["list"]
     :fn   list-current-path-files :spec list-spec}
    {:cmds ["pkg"]

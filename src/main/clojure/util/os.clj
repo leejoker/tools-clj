@@ -39,15 +39,29 @@
                tools-clj-home)]
     (create-dirs (fs/path path))))
 
+(defn config-file
+  []
+  (fs/path (env-path) ".tclrc"))
+
+(defn config-json
+  []
+  (let [cf (config-file)]
+    (if (fs/exists? cf)
+      (json/parse-string (slurp (str (fs/absolutize cf))) true)
+      nil)))
+
+(defn save-config-file
+  [json]
+  (let [f (config-file)]
+    (spit (str (fs/absolutize f)) (json/encode json) :append false)))
+
 (defn load-config
   [key default-value]
-  (let [config-file (fs/path (env-path) ".tclrc")]
-    (if (fs/exists? config-file)
-      (let [v (key (json/parse-string (slurp (str (fs/absolutize config-file))) true))]
-        (if (nil? v)
-          default-value
-          v))
-      default-value)))
+  (let [json (config-json)
+        v (if (nil? json) nil (key json))]
+    (if (nil? v)
+      default-value
+      v)))
 
 (defn cmd
   [command]
