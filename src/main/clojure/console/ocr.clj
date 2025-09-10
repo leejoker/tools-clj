@@ -1,10 +1,12 @@
 (ns console.ocr
   (:gen-class)
-  (:require [util.os :refer [load-config cmd-run cmd base64-encode]]
-            [util.image-util :refer [png-valid?]]
-            [babashka.fs :as fs]
-            [clojure.string :as s]
-            [util.ollama :as ollama]))
+  (:require
+   [babashka.fs :as fs]
+   [clojure.string :as s]
+   [util.image-util :refer [png-valid?]]
+   [util.ollama :as ollama]
+   [util.os :refer [base64-encode cmd cmd-run load-config]])
+  (:import (jna TclLib)))
 
 (defrecord OcrConfig [snip-exec-path tesseract-path tmp-image-path base-url model-name])
 
@@ -30,10 +32,13 @@
                    "帮我识别图片中的内容，并输出原始内容，不要包含其他的文字，也不要输出markdown格式的数据"
                    (conj [] (base64-encode image-path))))
 
-(defn show-ocr-content
+(defn handle-ocr-content
   [content]
-  (let [trim-content (s/trim-newline (s/replace (s/replace-first content #"```(\w+)\n" "") #"```" ""))]
-    (println trim-content)))
+  (s/trim-newline (s/replace (s/replace-first content #"```(\w+)\n" "") #"```" "")))
+
+(defn copy-to-clipboard
+  [content]
+  (.SetClipboardUTF8 TclLib/INSTANCE (handle-ocr-content content)))
 
 (defn run-ocr
   [{:keys [opts]}]
@@ -48,5 +53,5 @@
         (let [content (if (= (:type opts) "local")
                         (local-ocr (:tesseractPath config) image-path)
                         (ollama-ocr image-path (:base-url config) (:model-name config)))]
-          (show-ocr-content content))
+          (copy-to-clipboard content))
         (recur image)))))

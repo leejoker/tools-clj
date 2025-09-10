@@ -10,3 +10,5 @@ target/
 .calva/
 /.nrepl-port
 *.exe
+bin/*
+conf

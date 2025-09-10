@@ -39,4 +39,4 @@ native-image \
     --initialize-at-build-time=com.fasterxml.jackson.core.json.JsonWriteFeature \
     --verbose \
     --no-fallback \
-    -o tcl
+    -o bin/tcl

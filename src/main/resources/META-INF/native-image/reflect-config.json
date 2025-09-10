@@ -148,5 +148,17 @@
   {
     "name": "org.eclipse.jgit.util.sha1.SHA1$Sha1Implementation",
     "methods": [{ "name": "values", "parameterTypes": [] }]
+  },
+  {
+    "name": "javax.swing.plaf.basic.BasicPanelUI",
+    "methods": [{ "name": "createUI", "parameterTypes": ["javax.swing.JComponent"] }]
+  },
+  {
+    "name": "javax.swing.plaf.metal.MetalLabelUI",
+    "methods": [{ "name": "createUI", "parameterTypes": ["javax.swing.JComponent"] }]
+  },
+  {
+    "name": "javax.swing.plaf.metal.MetalRootPaneUI",
+    "methods": [{ "name": "createUI", "parameterTypes": ["javax.swing.JComponent"] }]
   }
 ]

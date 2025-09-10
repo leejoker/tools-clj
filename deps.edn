@@ -6,7 +6,8 @@
            org.babashka/http-client             {:mvn/version "0.4.23"}
            com.github.clj-easy/graal-build-time {:mvn/version "1.0.5"}
            org.eclipse.jgit/org.eclipse.jgit    {:mvn/version "7.3.0.202506031305-r"}
-           org.slf4j/slf4j-simple               {:mvn/version "2.0.17"}}
+           org.slf4j/slf4j-simple               {:mvn/version "2.0.17"}
+           net.java.dev.jna/jna                 {:mvn/version "5.17.0"}}
 
  :paths   ["src/main/clojure" "src/main/java" "src/main/resources"]
 
