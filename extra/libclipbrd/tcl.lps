@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="tcl.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="15"/>
+        <CursorPos X="58" Y="26"/>
+        <UsageCount Value="77"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="demo.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="72" Y="9"/>
+        <UsageCount Value="15"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\packages\fcl-image\src\clipping.pp"/>
+        <UnitName Value="Clipping"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\lazarus\lcl\clipbrd.pp"/>
+        <UnitName Value="Clipbrd"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="177"/>
+        <CursorPos X="20" Y="226"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\packages\winunits-base\src\shellapi.pp"/>
+        <UnitName Value="ShellApi"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1694"/>
+        <CursorPos X="10" Y="1710"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\lazarus\lcl\interfaces\win32\interfaces.pp"/>
+        <UnitName Value="Interfaces"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="59" Y="21"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\rtl\objpas\sysutils\sysunih.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="25"/>
+        <CursorPos X="10" Y="41"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="lib\x86_64-win64\tcl.compiled"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="tcl.lps"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="51" Y="7"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\rtl\inc\ustringh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="139"/>
+        <CursorPos X="82" Y="148"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\rtl\win\wininc\ascfun.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="247"/>
+        <CursorPos X="53" Y="261"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="540"/>
+        <CursorPos X="46" Y="555"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\lazarus\components\lazutils\lazutf8.pas"/>
+        <UnitName Value="LazUTF8"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="217"/>
+        <CursorPos X="41" Y="233"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\fpc_tools\fpcsrc\rtl\win\wininc\unifun.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="248"/>
+        <CursorPos X="21" Y="257"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="stringutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="56"/>
+        <CursorPos X="51" Y="9"/>
+        <UsageCount Value="47"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="35" Column="72" TopLine="22"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="26" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="25" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="26" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="25" Column="22" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="32" Column="54" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="33" Column="41" TopLine="17"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="29" Column="17" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="25" Column="52" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="33" Column="44" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="36" Column="45" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="7" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="25" Column="35" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="36" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="34" Column="16" TopLine="16"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="33" Column="63" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="37" Column="40" TopLine="13"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="35" Column="12" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="16" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="30" Column="73" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="27" Column="46" TopLine="17"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="34" Column="33" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="127" Column="51" TopLine="117"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="129" Column="17" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="128" Column="14" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="131" Column="32" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="101" Column="12" TopLine="91"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="11" Column="14"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="9" Column="11"/>
+      </Position>
+      <Position>
+        <Filename Value="tcl.lpr"/>
+        <Caret Line="5" Column="5"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

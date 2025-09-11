@@ -29,4 +29,5 @@
 
 (defmacro tryp
   [& body]
-  (list 'util.global/try-pe nil body))
+  (when-not (nil? body)
+    (list 'util.global/try-pe nil body)))
