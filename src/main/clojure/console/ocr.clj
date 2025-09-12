@@ -21,7 +21,7 @@
 
 (defn local-ocr
   [tesseract-path image-path]
-  (let [result-lines (cmd (str "cmd.exe /c " tesseract-path " " image-path " stdout -l eng+chi_sim"))
+  (let [result-lines (cmd (str tesseract-path " " image-path " stdout -l eng+chi_sim"))
         result-str (s/join (System/lineSeparator) result-lines)]
     result-str))
 
@@ -45,7 +45,7 @@
   [{:keys [opts]}]
   (let [config (load-orc-config)
         image-path (str (fs/absolutize (fs/path (:tmp-image-path config) "ocr.png")))
-        capture-cmd (str "cmd.exe /c " (:snip-exec-path config) " snip -o " image-path)]
+        capture-cmd (str (:snip-exec-path config) " snip -o " image-path)]
     (when (fs/exists? image-path)
       (fs/delete image-path))
     (cmd-run capture-cmd)
