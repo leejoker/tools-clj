@@ -22,7 +22,7 @@
 (defn local-ocr
   [tesseract-path image-path]
   (let [result-lines (cmd (str tesseract-path " " image-path " stdout -l eng+chi_sim"))
-        result-str (s/join (System/lineSeparator) result-lines)]
+        result-str (s/join System/lineSeparator result-lines)]
     result-str))
 
 (defn ollama-ocr
