@@ -27,10 +27,11 @@
 
 (defn ollama-ocr
   [image-path base-url model-name]
-  (ollama/generate base-url
-                   model-name
-                   "帮我识别图片中的内容，并输出原始内容，不要包含其他的文字，也不要输出markdown格式的数据"
-                   (conj [] (base64-encode image-path))))
+  (let [f (if (= (load-config :modelType "ollama") "ollama") ollama/generate ollama/openai-generate)]
+    (f base-url
+       model-name
+       "帮我识别图片中的内容，并输出原始内容，不要包含其他的文字，也不要输出markdown格式的数据"
+       (conj [] (base64-encode image-path)))))
 
 (defn handle-ocr-content
   [content]
