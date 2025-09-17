@@ -1,3 +1,4 @@
+// choose your os version for jna and delete this line
 {
   "resources": {
     "includes": [
@@ -6,6 +7,15 @@
       },
       {
         "pattern": "com/sun/jna/win32-x86-64/jnidispatch.dll"
+      },
+      {
+        "pattern": "com/sun/jna/linux-x86-64/libjnidispatch.so"
+      },
+      {
+        "pattern": "win32-x86-64/tcl.dll"
+      },
+      {
+        "pattern": "linux-x86-64/libtcl.so"
       }
     ]
   }

@@ -5,7 +5,12 @@ unit stringutils;
 interface
 
 uses
-  Classes, SysUtils, LazUTF8, Windows;
+  {$IFDEF MSWINDOWS}
+  Windows,
+  {$ENDIF}
+  Classes,
+  SysUtils,
+  LazUTF8;
 
 type
   TCharSet = (csASCII, csUTF8, csUTF16LE, csUTF16BE, csUnknown);
@@ -14,7 +19,9 @@ function QuickGuess(P: pchar; Len: integer): TCharSet;
 function IsValidUTF8(P: pchar; ByteLen: integer): boolean;
 function GB18030Score(P: pchar; Len: integer): integer;
 function GuessEncoding(P: pchar; ByteLen: integer): string;
+{$IFDEF MSWINDOWS}
 function GBKToUTF8(const s: rawbytestring): utf8string;
+{$ENDIF}
 
 implementation
 
@@ -108,6 +115,7 @@ begin
   Exit('ISO-8859-1'); // 兜底
 end;
 
+{$IFDEF MSWINDOWS}
 function GBKToUTF8(const s: rawbytestring): utf8string;
 var
   wlen, u8len: integer;
@@ -120,5 +128,6 @@ begin
   SetLength(Result, u8len);
   WideCharToMultiByte(CP_UTF8, 0, pwidechar(ws), wlen, PChar(Result), u8len, nil, nil);
 end;
+{$ENDIF}
 
 end.

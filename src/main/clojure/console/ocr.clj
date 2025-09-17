@@ -5,7 +5,7 @@
    [clojure.string :as s]
    [util.image-util :refer [png-valid?]]
    [util.ollama :as ollama]
-   [util.os :refer [base64-encode cmd cmd-run load-config]])
+   [util.os :refer [base64-encode cmd cmd-run load-config temp-dir]])
   (:import (jna TclLib)))
 
 (defrecord OcrConfig [snip-exec-path tesseract-path tmp-image-path base-url model-name])
@@ -14,7 +14,7 @@
   []
   (let [snip-exec-path (load-config :snipExecPath "snipaste")
         tesseract-path (load-config :tesseractPath "tesseract")
-        tmp-image-path (load-config :tmpImagePath (System/getenv "TEMP"))
+        tmp-image-path (load-config :tmpImagePath (temp-dir))
         base-url (load-config :baseUrl "http://127.0.0.1:11434")
         model-name (load-config :modelName "qwen2.5vl:3b")]
     (OcrConfig. snip-exec-path tesseract-path tmp-image-path base-url model-name)))

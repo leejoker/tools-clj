@@ -9,10 +9,18 @@
         <Filename Value="tcl.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="15"/>
-        <CursorPos X="58" Y="26"/>
-        <UsageCount Value="77"/>
+        <TopLine Value="64"/>
+        <CursorPos X="61" Y="78"/>
+        <UsageCount Value="78"/>
         <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="stringutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="109"/>
+        <CursorPos X="62" Y="42"/>
+        <UsageCount Value="48"/>
       </Unit>
       <Unit>
         <Filename Value="demo.pas"/>
@@ -104,135 +112,18 @@
         <UsageCount Value="7"/>
       </Unit>
       <Unit>
-        <Filename Value="stringutils.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="56"/>
-        <CursorPos X="51" Y="9"/>
-        <UsageCount Value="47"/>
-        <Loaded Value="True"/>
+        <Filename Value="..\..\..\..\..\tools\fpcupdeluxe\lazarus\lcl\dialogs.pp"/>
+        <UnitName Value="Dialogs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="38"/>
+        <CursorPos X="3" Y="50"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory>
       <Position>
         <Filename Value="tcl.lpr"/>
-        <Caret Line="35" Column="72" TopLine="22"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="26" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="25" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="26" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="25" Column="22" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="32" Column="54" TopLine="24"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="33" Column="41" TopLine="17"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="29" Column="17" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="25" Column="52" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="33" Column="44" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="36" Column="45" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="7" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="25" Column="35" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="36" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="34" Column="16" TopLine="16"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="33" Column="63" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="37" Column="40" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="35" Column="12" TopLine="24"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="16" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="30" Column="73" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="27" Column="46" TopLine="17"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="34" Column="33" TopLine="23"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="127" Column="51" TopLine="117"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="129" Column="17" TopLine="118"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="128" Column="14" TopLine="119"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="131" Column="32" TopLine="118"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="101" Column="12" TopLine="91"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="11" Column="14"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="9" Column="11"/>
-      </Position>
-      <Position>
-        <Filename Value="tcl.lpr"/>
-        <Caret Line="5" Column="5"/>
+        <Caret Line="69" Column="35" TopLine="55"/>
       </Position>
     </JumpHistory>
     <RunParams>

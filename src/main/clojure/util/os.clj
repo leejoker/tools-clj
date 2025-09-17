@@ -91,6 +91,12 @@
       (println e)
       false)))
 
+(defn temp-dir
+  []
+  (if (fs/windows?)
+    (System/getenv "TEMP")
+    "/var/tmp"))
+
 (defn delete-dir
   [dir-path]
   (if (fs/windows?)
