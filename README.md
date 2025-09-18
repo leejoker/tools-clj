@@ -52,6 +52,10 @@ clojure -M -m cmd.core
 
 对于 Windows 用户，可以使用 `scripts/compile.bat`。
 
+## upx compress
+
+[upx compress fix](https://github.com/upx/upx/issues/670#issuecomment-2869306660)
+
 ## 清理
 
 清理构建文件：
