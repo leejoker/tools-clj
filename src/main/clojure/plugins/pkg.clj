@@ -21,6 +21,10 @@
   [_]
   (cmd-runner scoop/unregistry-shims nil nil))
 
+(defmethod pkg-runner :list
+  [_]
+  (cmd-runner scoop/list-app nil nil))
+
 (defmethod pkg-runner :install
   [pkg-name]
   (cmd-runner scoop/install-app nil pkg-name))
