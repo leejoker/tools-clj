@@ -1,6 +1,8 @@
 (ns util.draw-table
   (:gen-class)
-  (:import [java.lang Character Character$UnicodeBlock]))
+  (:import [java.lang Character Character$UnicodeBlock])
+  (:require
+   [clojure.string :as s]))
 
 (defrecord DrawTable [header body max-width])
 
@@ -16,22 +18,27 @@
       2)))
 
 (defn column-width
-  [^String column]
-  (letfn [(char-wide? [^Integer codePoint]
-            (let [charType      (Character/getType codePoint)
-                  unicode-block (Character$UnicodeBlock/of codePoint)]
-              (or (= unicode-block Character$UnicodeBlock/CJK_UNIFIED_IDEOGRAPHS)
-                  (= charType Character/OTHER_LETTER)
-                  (= charType Character/LETTER_NUMBER)
-                  (<= 0x4e00 codePoint 0x9fff)
-                  (<= 0x3000 codePoint 0x303f)
-                  (<= 0xff00 codePoint 0xffef))))]
-    (reduce (fn [width codePoint]
-              (if (char-wide? codePoint)
-                (+ width 2)
-                (+ width 1)))
-            0
-            (int-array (.toArray (.codePoints column))))))
+  [^String column-value]
+  (let [column (if (s/includes? column-value "\033[92m")
+                 (-> column-value
+                     (s/replace "\033[92m" "")
+                     (s/replace "\033[0m" ""))
+                 column-value)]
+    (letfn [(char-wide? [^Integer codePoint]
+              (let [charType      (Character/getType codePoint)
+                    unicode-block (Character$UnicodeBlock/of codePoint)]
+                (or (= unicode-block Character$UnicodeBlock/CJK_UNIFIED_IDEOGRAPHS)
+                    (= charType Character/OTHER_LETTER)
+                    (= charType Character/LETTER_NUMBER)
+                    (<= 0x4e00 codePoint 0x9fff)
+                    (<= 0x3000 codePoint 0x303f)
+                    (<= 0xff00 codePoint 0xffef))))]
+      (reduce (fn [width codePoint]
+                (if (char-wide? codePoint)
+                  (+ width 2)
+                  (+ width 1)))
+              0
+              (int-array (.toArray (.codePoints column)))))))
 
 (defn column-sub
   [^String s n total-size result]

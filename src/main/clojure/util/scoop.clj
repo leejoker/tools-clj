@@ -106,7 +106,7 @@
     (println "Please upgrade your PowerShell version to 5.1 or higher.")))
 
 (defn list-app
-  [{:keys [options]}]
+  [_]
   (tryp
     (let [shims (:shims (tools-home))
           scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]

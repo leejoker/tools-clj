@@ -9,6 +9,16 @@
            [java.time LocalDateTime]
            [java.time.format DateTimeFormatter]))
 
+(defn executable?
+  [path]
+  (if (fs/windows?)
+    (s/ends-with? (s/lower-case (fs/absolutize path)) ".exe")
+    (fs/executable? (fs/file path))))
+
+(defn color-executable-file
+  [f value prefix suffix]
+  (if (executable? (fs/file f)) (str prefix value suffix) value))
+
 (defn date-formatter
   []
   (DateTimeFormatter/ofPattern "yyyy-MM-dd HH:mm:ss"))
