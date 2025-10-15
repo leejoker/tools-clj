@@ -37,6 +37,7 @@ native-image \
     --initialize-at-build-time=com.fasterxml.jackson.core.io.JsonStringEncoder \
     --initialize-at-build-time=com.fasterxml.jackson.core.PrettyPrinter \
     --initialize-at-build-time=com.fasterxml.jackson.core.json.JsonWriteFeature \
+    --initialize-at-build-time=com.fasterxml.jackson.core.base.ParserMinimalBase,com.fasterxml.jackson.core.json.ReaderBasedJsonParser,com.fasterxml.jackson.core.io.ContentReference,com.fasterxml.jackson.core.util.BufferRecyclers,com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.core.io.NumberInput,com.fasterxml.jackson.core.base.ParserBase,com.fasterxml.jackson.core.JsonToken,com.fasterxml.jackson.core.json.JsonParserBase \
     --verbose \
     --no-fallback \
     -o bin/tcl
