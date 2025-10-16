@@ -19,7 +19,7 @@
 
 ## 安装
 
-确保你已经安装了 [Clojure CLI](https://clojure.org/guides/getting_started) 和 [Leiningen](https://leiningen.org/)。
+确保你已经安装了 [Clojure CLI](https://clojure.org/guides/getting_started)
 
 1. 克隆仓库：
    ```bash
@@ -29,7 +29,7 @@
 
 2. 安装依赖：
    ```bash
-   lein deps
+   clojure -X:deps
    ```
 
 ## 使用
@@ -51,6 +51,10 @@ clojure -M -m cmd.core
 ```
 
 对于 Windows 用户，可以使用 `scripts/compile.bat`。
+
+### 构建libclipbrd
+
+这个库是使用Pascal开发的，可以安装lazarus进行编译
 
 ## upx compress
 
