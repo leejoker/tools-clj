@@ -19,10 +19,8 @@
 
 (defn column-width
   [^String column-value]
-  (let [column (if (s/includes? column-value "\033[92m")
-                 (-> column-value
-                     (s/replace "\033[92m" "")
-                     (s/replace "\033[0m" ""))
+  (let [column (if (s/includes? column-value "\033[0m")
+                 (s/replace column-value #"\033\[\d+m" "")
                  column-value)]
     (letfn [(char-wide? [^Integer codePoint]
               (let [charType      (Character/getType codePoint)

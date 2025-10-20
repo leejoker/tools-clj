@@ -12,12 +12,18 @@
 (defn executable?
   [path]
   (if (fs/windows?)
-    (s/ends-with? (s/lower-case (fs/absolutize path)) ".exe")
+    (or (s/ends-with? (s/lower-case (fs/absolutize path)) ".exe")
+        (s/ends-with? (s/lower-case (fs/absolutize path)) ".bat")
+        (s/ends-with? (s/lower-case (fs/absolutize path)) ".cmd")
+        (s/ends-with? (s/lower-case (fs/absolutize path)) ".ps1"))
     (fs/executable? (fs/file path))))
 
-(defn color-executable-file
+(defn color-file
   [f value prefix suffix]
-  (if (executable? (fs/file f)) (str prefix value suffix) value))
+  (cond
+    (executable? (fs/file f)) (str (first prefix) value suffix)
+    (fs/directory? (fs/file f)) (str (second prefix) value suffix)
+    :else value))
 
 (defn date-formatter
   []

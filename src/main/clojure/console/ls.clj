@@ -3,7 +3,7 @@
   (:require
    [babashka.fs :as fs]
    [util.draw-table :as dt :refer [column-sub column-width]]
-   [util.os :refer [load-config date-formatter color-executable-file]])
+   [util.os :refer [load-config date-formatter color-file]])
   (:import
    (java.nio.file.attribute FileTime)
    (java.time ZoneId)))
@@ -85,7 +85,7 @@
 
 (defn file-info
   [f]
-  (let [name          (color-executable-file f (handle-col-width (fs/file-name f)) "\033[92m" "\033[0m")
+  (let [name          (color-file f (handle-col-width (fs/file-name f)) '("\033[92m" "\033[35m") "\033[0m")
         file-type     (if (fs/directory? f) "Directory" "File")
         len           (if (= file-type "Directory") 0 (fs/size f))
         rlen          (if (= file-type "Directory") " " (readable-len (fs/size f)))
