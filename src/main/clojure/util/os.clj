@@ -21,8 +21,8 @@
 (defn color-file
   [f value prefix suffix]
   (cond
-    (executable? (fs/file f)) (str (first prefix) value suffix)
     (fs/directory? (fs/file f)) (str (second prefix) value suffix)
+    (executable? (fs/file f)) (str (first prefix) value suffix)
     :else value))
 
 (defn date-formatter
