@@ -1,20 +1,31 @@
 (ns config.cli-spec
   (:gen-class)
   (:require
-    [babashka.cli :as cli]
-    [config.debug-control :refer [debug-control]]
-    [config.project-template :refer [create-project]]
-    [console.eol :refer [run-eol]]
-    [console.kill :refer [run-kill]]
-    [console.ls :refer [list-current-path-files]]
-    [console.ocr :refer [run-ocr]]
-    [console.rm :refer [run-rm]]
-    [plugins.change-jetbrains-path :refer [run-cjp]]
-    [plugins.pkg :refer [pkg-run]]
-    [util.git :refer [clone-repo]]))
+   [babashka.cli :as cli]
+   [cheshire.core :as json]
+   [config.debug-control :refer [debug-control]]
+   [config.project-template :refer [create-project]]
+   [console.eol :refer [run-eol]]
+   [console.kill :refer [run-kill]]
+   [console.ls :refer [list-current-path-files]]
+   [console.ocr :refer [run-ocr]]
+   [console.rm :refer [run-rm]]
+   [plugins.change-jetbrains-path :refer [run-cjp]]
+   [plugins.pkg :refer [pkg-run]]
+   [util.git :refer [clone-repo]]
+   [util.os :refer [env-path config-json]]
+   [babashka.fs :as fs]))
+
+(defn load-config-info
+  [_]
+  (let [path (env-path)]
+    (println (json/generate-string {:path (str (fs/absolutize path))
+                                    :config (config-json)}
+                                   {:pretty true}))))
 
 (def cmd-info
   {"new"   "create clojure project"
+   "config" "load config info"
    "cjp"   "change paths in idea.properties"
    "clone" "clone repository from github"
    "debug" "debug enabled/disabled"
@@ -97,6 +108,8 @@
 (def cli-args
   [{:cmds ["new"]
     :fn   create-project}
+   {:cmds ["config"]
+    :fn   load-config-info}
    {:cmds ["cjp"]
     :fn   run-cjp}
    {:cmds ["clone"]
@@ -123,8 +136,8 @@
 (defn print-help
   "Prints help information for commands."
   ([] (println "Usage: <command> [options]")
-   (doseq [[cmd desc] cmd-info]
-     (println cmd "\t" desc)))
+      (doseq [[cmd desc] cmd-info]
+        (println cmd "\t" desc)))
   ([cmd]
    (if (nil? cmd)
      (print-help)

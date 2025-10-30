@@ -42,12 +42,14 @@
        "    powershell.exe -noprofile -ex unrestricted -file \"{scoop}\"  \"$@\"\n"
        "fi"))
 
-(def scoop-dir (load-config :scoop (create-plugin-dir "scoop")))
+(defn scoop-dir
+  []
+  (load-config :scoop (create-plugin-dir "scoop")))
 
 (defn bucket-dirs
   [& dirs]
   (apply reduce (fn [m dir]
-                  (let [dir-path (create-dirs (fs/path scoop-dir "buckets" dir))
+                  (let [dir-path (create-dirs (fs/path (scoop-dir) "buckets" dir))
                         bucket-key (keyword dir)]
                     (assoc m (str (fs/absolutize dir-path)) (bucket-key BUCKETS)))) {} dirs))
 
@@ -93,7 +95,7 @@
   (if (ps-version?)
     (let [shims (:shims (tools-home))
           buckets '("main" "versions" "extras" "nerd-fonts" "scoop-clojure")
-          scoop-app-dir (create-dirs (fs/path scoop-dir "apps" "scoop" "current"))
+          scoop-app-dir (create-dirs (fs/path (scoop-dir) "apps" "scoop" "current"))
           bucket-dir-map (bucket-dirs buckets)]
       (println "Scoop Installing...")
       (clone-repo SCOOP_PACKAGE_GIT_REPO scoop-app-dir 0)
@@ -118,7 +120,7 @@
    (let [shims (:shims (tools-home))
          scoop-cmd (str (fs/absolutize (fs/path shims "scoop.cmd")))]
      (cmd-run (str "cmd.exe /c " scoop-cmd " install " options))
-     (doseq [file (fs/list-dir (fs/path scoop-dir "shims"))]
+     (doseq [file (fs/list-dir (fs/path (scoop-dir) "shims"))]
        (try
          (fs/move file (fs/path shims (fs/file-name file)) {:replace-existing false})
          (catch Exception _
