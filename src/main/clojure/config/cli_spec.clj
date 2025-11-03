@@ -2,6 +2,7 @@
   (:gen-class)
   (:require
    [babashka.cli :as cli]
+   [babashka.fs :as fs]
    [cheshire.core :as json]
    [config.debug-control :refer [debug-control]]
    [config.project-template :refer [create-project]]
@@ -13,28 +14,28 @@
    [plugins.change-jetbrains-path :refer [run-cjp]]
    [plugins.pkg :refer [pkg-run]]
    [util.git :refer [clone-repo]]
-   [util.os :refer [env-path config-json]]
-   [babashka.fs :as fs]))
+   [util.os :refer [env-path config-json]]))
 
 (defn load-config-info
   [_]
-  (let [path (env-path)]
-    (println (json/generate-string {:path (str (fs/absolutize path))
-                                    :config (config-json)}
+  (let [path (env-path)
+        abs-path (str (fs/absolutize path))]
+    (println (json/generate-string {:TOOLS_CLJ_HOME abs-path
+                                    :config         (config-json)}
                                    {:pretty true}))))
 
 (def cmd-info
-  {"new"   "create clojure project"
+  {"new"    "create clojure project"
    "config" "load config info"
-   "cjp"   "change paths in idea.properties"
-   "clone" "clone repository from github"
-   "debug" "debug enabled/disabled"
-   "list"  "list files in current path"
-   "pkg"   "package management with scoop on windows and brew on others"
-   "rm"    "remove files or directories"
-   "kill"  "kill process by name"
-   "ocr"   "ocr image"
-   "eol"   "change file eol, just like dos2unix"})
+   "cjp"    "change paths in idea.properties"
+   "clone"  "clone repository from github"
+   "debug"  "debug enabled/disabled"
+   "list"   "list files in current path"
+   "pkg"    "package management with scoop on windows and brew on others"
+   "rm"     "remove files or directories"
+   "kill"   "kill process by name"
+   "ocr"    "ocr image"
+   "eol"    "change file eol, just like dos2unix"})
 
 (def list-spec
   {:all            {:alias  :a
@@ -146,3 +147,4 @@
          (println "Usage: tcl" cmd "[options]")
          (println (show-help {:spec (:spec cmd-spec)})))
        (println "Unknown command:" cmd)))))
+ 
