@@ -20,7 +20,7 @@ native-image \
     -J-Dconsole.encoding=UTF-8 \
     -H:+AddAllCharsets \
     -H:+ReportExceptionStackTraces \
-    -H:ResourceConfigurationFiles=native-config/resource-config_linux_amd64.json \
+    -H:ResourceConfigurationFiles=native-config/resource-config_darwin_arm64.json \
     --enable-http \
     --enable-https \
     --features=clj_easy.graal_build_time.InitClojureClasses \
