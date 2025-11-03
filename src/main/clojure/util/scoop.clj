@@ -20,7 +20,7 @@
 (def ^:const SCOOP_PS1_TEMPLATE
   (str "# {scoop}" (System/lineSeparator)
        "$path = {scoop}" (System/lineSeparator)
-       "if ($MyInvocation.ExpectingInput) { $input | & $path  @args } else { & $path  @args }" (System/lineSeparator)
+       "if ($MyInvocation.ExpectingInput) { $input | & {scoop} @args } else { & {scoop} @args }" (System/lineSeparator)
        "exit $LASTEXITCODE"))
 
 (def ^:const SCOOP_CMD_TEMPLATE
@@ -57,7 +57,7 @@
   [scoop-app-dir]
   (let [config (tools-home)
         scoop-ps (str (fs/absolutize (fs/path scoop-app-dir "bin" "scoop.ps1")))
-        ps1-file (string-format SCOOP_PS1_TEMPLATE (list scoop-ps))
+        ps1-file (string-format SCOOP_PS1_TEMPLATE (repeat 4 scoop-ps))
         cmd-file (string-format SCOOP_CMD_TEMPLATE (repeat 3 scoop-ps))
         sh-file (string-format SCOOP_SH_TEMPLATE (repeat 3 scoop-ps))
         scoop-shims {(str (fs/absolutize (fs/path (:shims config) "scoop.ps1"))) ps1-file
