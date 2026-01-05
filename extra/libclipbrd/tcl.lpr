@@ -12,12 +12,16 @@ uses
   cthreads,
   Dialogs,
   process,
-  sysutils,
+  {$ENDIF}
+  {$IFDEF DARWIN}
+  Dialogs,
+  Clipbrd,
   {$ENDIF}
   {$ENDIF}
-  Classes,
+  SysUtils,
   LCLIntf,
   Interfaces,
+  Classes,
   stringutils;
 
 var
@@ -37,9 +41,7 @@ var
     MessageBoxA(0, PChar(Text), PChar(title), MB_OK or MB_ICONINFORMATION or MB_TOPMOST);
     {$ENDIF}
     {$IFDEF UNIX}
-    {$IFDEF LINUX}
     MessageDlg(PChar(title), PChar(Text), mtInformation, [mbOK], 0);
-    {$ENDIF}
     {$ENDIF}
   end;
 
@@ -56,6 +58,9 @@ var
       Clipboard.AsText := GBKToUTF8(AText);
       {$ENDIF}
       {$IFDEF UNIX}
+      {$IFDEF DARWIN}
+      Clipboard.AsText := AText;
+      {$ENDIF}
       {$IFDEF LINUX}
         with TProcess.Create(nil) do
         try

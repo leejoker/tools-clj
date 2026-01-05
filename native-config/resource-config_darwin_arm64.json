@@ -3,6 +3,12 @@
     "includes": [
       {
         "pattern": "org/eclipse/jgit/internal/JGitText.properties"
+      },
+      {
+        "pattern": "com/sun/jna/darwin/libjnidispatch.dylib"
+      },
+      {
+        "pattern": "darwin-aarch64/libtcl.dylib"
       }
     ]
   }
