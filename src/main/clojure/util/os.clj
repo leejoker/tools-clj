@@ -127,9 +127,15 @@
   [var-name]
   (System/getenv var-name))
 
+(defn remove-same-env-var
+  [var-value]
+  (->> (s/split var-value #";")
+       (map #(if (s/ends-with? % "\\") (subs % 0 (dec (count %))) %))
+       (into (sorted-set))))
+
 (defn set-system-env-var
   [var-name var-value]
-  (let [var-value-set (into (sorted-set) (s/split var-value #";"))
+  (let [var-value-set (remove-same-env-var var-value)
         new-var-value (s/join ";" (map #(str %) var-value-set))
         command (str "reg add \"HKCU\\Environment\" /v " var-name " /t REG_SZ /d \"" new-var-value "\" /f")]
     (cmd-run-quite (str "cmd /c " command))))
@@ -144,7 +150,7 @@
 (defn remove-path
   [path-value]
   (let [path (get-system-env-var "PATH")
-        path-set (into (sorted-set) (s/split path #";"))
+        path-set (remove-same-env-var path)
         new-path (s/join ";" (remove #(s/includes? % path-value) path-set))]
     (set-system-env-var "PATH" new-path)))
 
